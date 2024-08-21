@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GYM93.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GYM93.Data;

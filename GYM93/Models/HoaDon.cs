@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GYM93.Models;
 
 namespace GYM93.Data;
 

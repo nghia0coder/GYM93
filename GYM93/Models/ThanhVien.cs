@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using GYM93.Data;
 
-namespace GYM93.Data;
+namespace GYM93.Models;
 
 public partial class ThanhVien
 {
