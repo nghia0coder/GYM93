@@ -7,22 +7,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GYM93.Data;
 using GYM93.Models;
+using GYM93.Service.IService;
 
 namespace GYM93.Controllers
 {
     public class ThanhVienController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IThanhVienService _thanhVienSerivce;
 
-        public ThanhVienController(AppDbContext context)
+        public ThanhVienController(IThanhVienService thanhVienSerivce)
         {
-            _context = context;
+            _thanhVienSerivce = thanhVienSerivce;
         }
 
         // GET: ThanhVien
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ThanhViens.ToListAsync());
+            try
+            {
+                return View(await _thanhVienSerivce.ThanhVienGetAll());
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return View();
+            }
+            
         }
 
         // GET: ThanhVien/Details/5
@@ -33,8 +43,7 @@ namespace GYM93.Controllers
                 return NotFound();
             }
 
-            var thanhVien = await _context.ThanhViens
-                .FirstOrDefaultAsync(m => m.ThanhVienId == id);
+            var thanhVien = await _thanhVienSerivce.GetThanhVienById(id);
             if (thanhVien == null)
             {
                 return NotFound();
@@ -57,9 +66,8 @@ namespace GYM93.Controllers
         public async Task<IActionResult> Create([Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,BienSoXe,NgayThamGia,HinhAnhTv")] ThanhVien thanhVien)
         {
             if (ModelState.IsValid)
-            {
-                _context.Add(thanhVien);
-                await _context.SaveChangesAsync();
+            {   
+                await _thanhVienSerivce.ThanhVienCreate(thanhVien);
                 return RedirectToAction(nameof(Index));
             }
             return View(thanhVien);
@@ -73,7 +81,7 @@ namespace GYM93.Controllers
                 return NotFound();
             }
 
-            var thanhVien = await _context.ThanhViens.FindAsync(id);
+            var thanhVien = await _thanhVienSerivce.GetThanhVienById(id);
             if (thanhVien == null)
             {
                 return NotFound();
@@ -86,7 +94,7 @@ namespace GYM93.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,Cmnd,NgayThamGia,HinhAnhTv")] ThanhVien thanhVien)
+        public async Task<IActionResult> Edit(int id, [Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,BienSoXe,NgayThamGia,HinhAnhTv")] ThanhVien thanhVien)
         {
             if (id != thanhVien.ThanhVienId)
             {
@@ -95,22 +103,7 @@ namespace GYM93.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(thanhVien);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ThanhVienExists(thanhVien.ThanhVienId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _thanhVienSerivce.ThanhVienUpdate(thanhVien);
                 return RedirectToAction(nameof(Index));
             }
             return View(thanhVien);
@@ -124,8 +117,7 @@ namespace GYM93.Controllers
                 return NotFound();
             }
 
-            var thanhVien = await _context.ThanhViens
-                .FirstOrDefaultAsync(m => m.ThanhVienId == id);
+            var thanhVien = await _thanhVienSerivce.GetThanhVienById(id);
             if (thanhVien == null)
             {
                 return NotFound();
@@ -139,19 +131,12 @@ namespace GYM93.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var thanhVien = await _context.ThanhViens.FindAsync(id);
+            var thanhVien =  await _thanhVienSerivce.GetThanhVienById(id);
             if (thanhVien != null)
             {
-                _context.ThanhViens.Remove(thanhVien);
+                await _thanhVienSerivce.ThanhVienDelete(id);
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ThanhVienExists(int id)
-        {
-            return _context.ThanhViens.Any(e => e.ThanhVienId == id);
         }
     }
 }

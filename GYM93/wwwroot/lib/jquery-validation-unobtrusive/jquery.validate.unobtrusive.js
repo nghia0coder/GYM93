@@ -99,6 +99,7 @@
         }
     }
 
+
     function onReset(event) {  // 'this' is the form element
         var $form = $(this),
             key = '__jquery_unobtrusive_validation_form_reset';

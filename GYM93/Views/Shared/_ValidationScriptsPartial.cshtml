@@ -1,2 +1,9 @@
 ﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("input").on("blur", function () {
+            $(this).valid(); // Kích hoạt kiểm tra khi rời khỏi trường nhập liệu
+        });
+    });
+</script>
