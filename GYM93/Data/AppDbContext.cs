@@ -41,7 +41,7 @@ public partial class AppDbContext : DbContext
         {
             entity.ToTable("ThanhVien");
 
-            entity.Property(e => e.Cmnd)
+            entity.Property(e => e.BienSoXe)
                 .HasMaxLength(50)
                 .HasColumnName("CMND");
             entity.Property(e => e.HinhAnhTv).HasColumnName("HinhAnhTV");
