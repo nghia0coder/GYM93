@@ -16,7 +16,7 @@ public partial class ThanhVien
 
     public bool GioiTinh { get; set; }
 
-    public string Cmnd { get; set; } = null!;
+    public string BienSoXe { get; set; } = null!;
 
     public DateTime NgayThamGia { get; set; }
 
