@@ -4,11 +4,10 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Bạn Có Chắc Muốn Xóa Thành Viên Này Chứ?</h3>
 <div>
-    <h4>ThanhVien</h4>
+    <h5>Dữ Liệu Của Thành Viên Này Sẽ Mất Mãi Mãi Trên Hệ Thống</h5>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -33,7 +32,14 @@
             @Html.DisplayNameFor(model => model.GioiTinh)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GioiTinh)
+            @if (Model.GioiTinh == true)
+            {
+                @:Nam
+            }
+            else
+            {
+                @:Nữ
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BienSoXe)
@@ -51,13 +57,13 @@
             @Html.DisplayNameFor(model => model.HinhAnhTv)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HinhAnhTv)
+            <img src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-thumbnail" />
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ThanhVienId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Trở Về Danh Sách</a>
     </form>
 </div>

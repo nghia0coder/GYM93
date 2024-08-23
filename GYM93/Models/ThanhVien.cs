@@ -33,7 +33,6 @@ public partial class ThanhVien
     public string? HinhAnhTv { get; set; }
     [Display(Name = "Hình Ảnh Thành Viên")]
     [NotMapped]
-    [Required(ErrorMessage = "Yêu Cầu Hình Ảnh Thành Viên")]
     public IFormFile? Image {  get; set; }
 
     public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
