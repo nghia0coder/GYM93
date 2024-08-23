@@ -61,9 +61,7 @@ namespace GYM93.Service
                 {
                     var webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                     var oldFilePathDirectory = Path.Combine(webRootPath, thanhVien.HinhAnhTv.Replace("/", "\\"));
-                    Console.WriteLine("Đường dẫn file: " + oldFilePathDirectory);
-
-                    // Kiểm tra và xóa ảnh nếu tồn tại
+           
                     if (File.Exists(oldFilePathDirectory))
                     {
                         File.Delete(oldFilePathDirectory);

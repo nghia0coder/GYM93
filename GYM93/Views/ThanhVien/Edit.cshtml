@@ -29,10 +29,12 @@
                 <input asp-for="Sđt" class="form-control" />
                 <span asp-validation-for="Sđt" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="GioiTinh" /> @Html.DisplayNameFor(model => model.GioiTinh)
-                </label>
+            <div class="form-group">
+                <label for="gioiTinh">@Html.DisplayNameFor(model => model.GioiTinh)</label>
+                <select asp-for="GioiTinh" class="form-control" id="gioiTinh">
+                    <option value="true">Nam</option>
+                    <option value="false">Nữ</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="BienSoXe" class="control-label"></label>
@@ -44,8 +46,15 @@
                 <input asp-for="NgayThamGia" class="form-control" />
                 <span asp-validation-for="NgayThamGia" class="text-danger"></span>
             </div>
+            <div>
+                <img id="preview" src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-thumbnail"  />
+            </div>
             <div class="form-group">
-                <input asp-for="Image" class="form-label" />
+                
+                <input asp-for="Image" class="form-label" style="display:none" id="fileInput" onchange="previewImage(event)" />
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Thay Hình Ảnh Khác
+                </button>
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
