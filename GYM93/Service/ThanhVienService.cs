@@ -28,6 +28,27 @@ namespace GYM93.Service
             thanhVien.NgayThamGia = DateTime.Now;
             _appDbContext.Add(thanhVien);
             await _appDbContext.SaveChangesAsync();
+            if (thanhVien.Image != null)
+            {
+                string fileName = thanhVien.ThanhVienId + Path.GetExtension(thanhVien.Image.FileName);
+                string filePath = @"wwwroot/memberImages/" + fileName;
+                var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+
+                using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                {
+                    thanhVien.Image.CopyTo(fileStream);
+                }
+
+
+                thanhVien.HinhAnhTv = "memberImages/" + fileName;
+            }
+            else
+            {
+                thanhVien.HinhAnhTv = "https://placehold.co/600x400";
+            }
+
+            _appDbContext.ThanhViens.Update(thanhVien);
+            await _appDbContext.SaveChangesAsync();
         }
 
         public async Task ThanhVienDelete(int thanhVienId)
@@ -35,10 +56,25 @@ namespace GYM93.Service
             var thanhVien = await _appDbContext.ThanhViens.FindAsync(thanhVienId);
             if (thanhVien != null)
             {
+               
+                if (!string.IsNullOrEmpty(thanhVien.HinhAnhTv))
+                {
+                    var webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    var oldFilePathDirectory = Path.Combine(webRootPath, thanhVien.HinhAnhTv.Replace("/", "\\"));
+                    Console.WriteLine("Đường dẫn file: " + oldFilePathDirectory);
+
+                    // Kiểm tra và xóa ảnh nếu tồn tại
+                    if (File.Exists(oldFilePathDirectory))
+                    {
+                        File.Delete(oldFilePathDirectory);
+                    }
+                }
                 _appDbContext.ThanhViens.Remove(thanhVien);
+
+                _appDbContext.SaveChanges();
+
             }
 
-            await _appDbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ThanhVien>> ThanhVienGetAll()
@@ -51,6 +87,30 @@ namespace GYM93.Service
             try
             {
                 _appDbContext.Update(thanhVien);
+                await _appDbContext.SaveChangesAsync();
+                if (thanhVien.Image != null)
+                {
+                    if (!string.IsNullOrEmpty(thanhVien.HinhAnhTv))
+                    {
+                        var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), thanhVien.HinhAnhTv);
+                        FileInfo file = new FileInfo(oldFilePathDirectory);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+
+                    }
+                    string fileName = thanhVien.ThanhVienId + Path.GetExtension(thanhVien.Image.FileName);
+                    string filePath = @"wwwroot\memberImages\" + fileName;
+                    var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+                    using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                    {
+                        thanhVien.Image.CopyTo(fileStream);
+                    }
+                    thanhVien.HinhAnhTv = "memberImages/" + fileName;
+                }
+
+                _appDbContext.ThanhViens.Update(thanhVien);
                 await _appDbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -65,6 +125,7 @@ namespace GYM93.Service
                 }
             }
         }
+
 
         public bool ThanhVienExists(int id)
         {
