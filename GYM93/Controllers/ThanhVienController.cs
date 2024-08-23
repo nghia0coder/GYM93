@@ -63,13 +63,13 @@ namespace GYM93.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,BienSoXe,NgayThamGia,HinhAnhTv")] ThanhVien thanhVien)
+        public async Task<IActionResult> Create([Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,BienSoXe,NgayThamGia,Image")] ThanhVien thanhVien)
         {
             if (ModelState.IsValid)
             {   
                 await _thanhVienSerivce.ThanhVienCreate(thanhVien);
                 return RedirectToAction(nameof(Index));
-            }
+            }  
             return View(thanhVien);
         }
 
@@ -94,7 +94,7 @@ namespace GYM93.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,BienSoXe,NgayThamGia,HinhAnhTv")] ThanhVien thanhVien)
+        public async Task<IActionResult> Edit(int id, [Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,BienSoXe,NgayThamGia,Image")] ThanhVien thanhVien)
         {
             if (id != thanhVien.ThanhVienId)
             {
