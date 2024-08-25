@@ -22,7 +22,7 @@ namespace GYM93.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GYM93.Data.HoaDon", b =>
+            modelBuilder.Entity("GYM93.Models.HoaDon", b =>
                 {
                     b.Property<int>("HoaDonId")
                         .ValueGeneratedOnAdd()
@@ -30,8 +30,17 @@ namespace GYM93.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HoaDonId"));
 
+                    b.Property<DateTime>("NgayBatDau")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayKetThuc")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("NgayThanhToan")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ThangDangKy")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ThanhVienId")
                         .HasColumnType("int");
@@ -58,7 +67,7 @@ namespace GYM93.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CMND");
+                        .HasColumnName("BienSoXe");
 
                     b.Property<bool>("GioiTinh")
                         .HasColumnType("bit");
@@ -68,11 +77,18 @@ namespace GYM93.Migrations
                         .HasColumnName("HinhAnhTV");
 
                     b.Property<string>("HoVaTenDem")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("NgayHetHan")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("NgayThamGia")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("SoTienDaDong")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Sđt")
                         .IsRequired()
@@ -90,7 +106,7 @@ namespace GYM93.Migrations
                     b.ToTable("ThanhVien", (string)null);
                 });
 
-            modelBuilder.Entity("GYM93.Data.HoaDon", b =>
+            modelBuilder.Entity("GYM93.Models.HoaDon", b =>
                 {
                     b.HasOne("GYM93.Models.ThanhVien", "ThanhVien")
                         .WithMany("HoaDons")

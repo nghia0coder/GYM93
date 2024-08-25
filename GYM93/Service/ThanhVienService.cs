@@ -26,6 +26,7 @@ namespace GYM93.Service
         public async Task ThanhVienCreate(ThanhVien thanhVien)
         {
             thanhVien.NgayThamGia = DateTime.Now;
+            thanhVien.SoTienDaDong = 0;
             _appDbContext.Add(thanhVien);
             await _appDbContext.SaveChangesAsync();
             if (thanhVien.Image != null)

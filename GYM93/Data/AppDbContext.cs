@@ -30,6 +30,9 @@ public partial class AppDbContext : DbContext
             entity.ToTable("HoaDon");
 
             entity.Property(e => e.TongTien).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.NgayThanhToan).HasColumnType("datetime2");
+            entity.Property(e => e.NgayBatDau).HasColumnType("datetime");
+            entity.Property(e => e.NgayKetThuc).HasColumnType("datetime");
 
             entity.HasOne(d => d.ThanhVien).WithMany(p => p.HoaDons)
                 .HasForeignKey(d => d.ThanhVienId)
@@ -48,6 +51,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Sđt)
                 .HasMaxLength(50)
                 .HasColumnName("SĐT");
+            entity.Property(e => e.NgayThamGia).HasColumnType("date");
             entity.Property(e => e.Ten).HasMaxLength(50);
         });
 
