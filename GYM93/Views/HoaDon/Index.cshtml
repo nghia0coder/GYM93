@@ -1,0 +1,53 @@
+﻿@model IEnumerable<GYM93.Models.HoaDon>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh Sách Hóa Đơn</h1>
+
+<p>
+    <a asp-action="Create">Tạo Hóa Đơn Mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.HoaDonId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ThanhVien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayThanhToan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TongTien)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoaDonId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThanhVienId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayThanhToan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTien)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.HoaDonId">Chỉnh Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.HoaDonId">Xem Chi Tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.HoaDonId">Xóa </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

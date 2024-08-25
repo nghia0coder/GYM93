@@ -13,3 +13,37 @@ function previewImage(event) {
     };
     reader.readAsDataURL(file);
 }
+
+
+document.getElementById("tongTienInput").addEventListener("input", function (e) {
+    let value = e.target.value.replace(/[^0-9]/g, '')
+    if (value.length > 0) {
+        value = parseFloat(value).toLocaleString();
+    }
+    e.target.value = value ? value + ' VNĐ' : '';
+    document.getElementById("tongTienHidden").value = value.replace(/[^0-9]/g, '');
+})
+document.getElementById("tongTienInput").addEventListener("blur", function () {
+    validateInput();
+})
+
+function validateInput() {
+
+    let numericValue = document.getElementById("tongTienHidden").value;
+
+
+    let numberValue = parseFloat(numericValue);
+    let validationMessage = '';
+
+
+    if (isNaN(numberValue)) {
+        validationMessage = 'Giá trị không hợp lệ';
+    } else if (numberValue < 100000) {
+        validationMessage = 'Giá trị phải lớn hơn hoặc bằng 100.000 VNĐ';
+    } else if (numberValue > 5000000) {
+        validationMessage = 'Giá trị phải nhỏ hơn hoặc bằng 5.000.000 VNĐ';
+    }
+
+    // Cập nhật thông báo lỗi
+    document.getElementById("validationMessage").textContent = validationMessage;
+}
