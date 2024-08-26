@@ -1,7 +1,9 @@
 ﻿using GYM93.Data;
 using GYM93.Models;
 using GYM93.Service.IService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 
 namespace GYM93.Service
 {
@@ -131,6 +133,15 @@ namespace GYM93.Service
             return _appDbContext.ThanhViens.Any(e => e.ThanhVienId == id);
         }
 
-     
+        public async Task<IActionResult> SearchThanhVien(string term)
+        {
+            var thanhviens = await _appDbContext.ThanhViens
+                .Where(n => n.Ten.Contains(term))
+                .Select(n => new { n.Ten, n.ThanhVienId })
+                .ToListAsync();
+
+            return new JsonResult(thanhviens);
+        }
+
     }
 }

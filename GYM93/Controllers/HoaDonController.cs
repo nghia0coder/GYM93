@@ -48,7 +48,7 @@ namespace GYM93.Controllers
         // GET: HoaDon/Create
         public IActionResult Create()
         {
-            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "BienSoXe");
+            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace GYM93.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "BienSoXe", hoaDon.ThanhVienId);
+            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten", hoaDon.ThanhVienId);
             return View(hoaDon);
         }
 

@@ -1,4 +1,5 @@
 ﻿using GYM93.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GYM93.Service.IService
 {
@@ -10,6 +11,7 @@ namespace GYM93.Service.IService
         Task<IEnumerable<ThanhVien>> ThanhVienGetAll();
         Task<ThanhVien> GetThanhVienById(int? thanhVienId);
 
+        Task<IActionResult> SearchThanhVien(string term);
         bool ThanhVienExists(int thanhVienId);
     }
 }

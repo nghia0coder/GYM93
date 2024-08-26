@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GYM93.Data;
 using GYM93.Models;
 using GYM93.Service.IService;
+using GYM93.Service;
 
 namespace GYM93.Controllers
 {
@@ -124,6 +125,12 @@ namespace GYM93.Controllers
             }
 
             return View(thanhVien);
+        }
+        [HttpGet]
+        public async Task<IActionResult> SearchThanhVien(string term)
+        {
+            var thanhviens = await _thanhVienSerivce.SearchThanhVien(term); // Gọi dịch vụ
+            return Json(thanhviens); // Trả về kết quả dưới dạng JSON
         }
 
         // POST: ThanhVien/Delete/5
