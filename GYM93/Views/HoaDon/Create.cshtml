@@ -15,10 +15,11 @@
                 <label asp-for="ThanhVienId" class="control-label"></label>
                 <input id="searchThanhVien" type="text" class="form-control" placeholder="Tìm thành viên..." />
                 <input type="hidden" asp-for="ThanhVienId" />
+                <span asp-validation-for="ThanhVienId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ThangDangKy" class="control-label"></label>
-                <input asp-for="ThangDangKy" class="form-control" />
+                <input id="thangDangKy" asp-for="ThangDangKy" class="form-control" />
                 <span asp-validation-for="ThangDangKy" class="text-danger"></span>
             </div>
             <div class="form-group">
