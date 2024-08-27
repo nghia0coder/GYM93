@@ -37,7 +37,7 @@ function validateInput() {
 
 
     if (isNaN(numberValue)) {
-        validationMessage = 'Giá trị không hợp lệ';
+        validationMessage = 'Vui Lòng Nhập Tổng Tiền';
     } else if (numberValue < 100000) {
         validationMessage = 'Giá trị phải lớn hơn hoặc bằng 100.000 VNĐ';
     } else if (numberValue > 5000000) {
@@ -47,3 +47,6 @@ function validateInput() {
     // Cập nhật thông báo lỗi
     document.getElementById("validationMessage").textContent = validationMessage;
 }
+
+
+

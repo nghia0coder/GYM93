@@ -30,7 +30,9 @@ public partial class ThanhVien
 
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
 
-    public DateTime? NgayHetHan { get; set; } 
+
+    public DateTime? NgayBatDau { get; set; }
+    public DateTime? NgayKetThuc { get; set; }
     public decimal SoTienDaDong { get; set; } 
 
     public string? HinhAnhTv { get; set; }

@@ -127,10 +127,10 @@ namespace GYM93.Controllers
             return View(thanhVien);
         }
         [HttpGet]
-        public async Task<IActionResult> SearchThanhVien(string term)
+        public JsonResult SearchThanhVien(string term)
         {
-            var thanhviens = await _thanhVienSerivce.SearchThanhVien(term); // Gọi dịch vụ
-            return Json(thanhviens); // Trả về kết quả dưới dạng JSON
+            var thanhviens = _thanhVienSerivce.SearchThanhVien(term); 
+            return Json(thanhviens);
         }
 
         // POST: ThanhVien/Delete/5

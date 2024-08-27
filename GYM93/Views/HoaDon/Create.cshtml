@@ -40,42 +40,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/autocomplete.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script>
-        $(document).ready(function () {
-
-            $("#searchThanhVien").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: '@Url.Action("SearchThanhVien", "ThanhVien")',
-                        data: { term: request.term },
-                        success: function (data) {
-                            console.log(data); // Xem dữ liệu trả về từ server
-                            response($.map(data, function (item) {
-                                return {
-                                    label: item.Ten,
-                                    value: item.ThanhVienId
-                                };
-                            }));
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("AJAX Error:", status, error); // Xem lỗi nếu có
-                        }
-                    });
-                },
-                minLength: 1, // Tùy chọn
-                delay: 300,   // Tùy chọn
-                select: function (event, ui) {
-                    $("#searchThanhVien").val(ui.item.label);
-                    $("input[name='ThanhVienId']").val(ui.item.value);
-                    return false;
-                }
-            });
-
-        });
-
-
-    </script>
 
 }
