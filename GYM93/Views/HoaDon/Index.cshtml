@@ -34,13 +34,13 @@
                 @Html.DisplayFor(modelItem => item.HoaDonId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ThanhVienId)
+                @item.ThanhVien?.Ten
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NgayThanhToan)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TongTien)
+                @String.Format("{0:N0} VNĐ", item.TongTien)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.HoaDonId">Chỉnh Sửa</a> |

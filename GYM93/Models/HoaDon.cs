@@ -11,7 +11,7 @@ public partial class HoaDon
     
     public int HoaDonId { get; set; }
     [DisplayName("Thành Viên Thanh Toán")]
-
+    [Required(ErrorMessage ="Thành Viên Không Tồn Tại")]
     public int? ThanhVienId { get; set; }
     [DisplayName("Tổng Tiền")]
     [Required(ErrorMessage = "Vui Lòng Nhập Số Tiền Thanh Toán")]

@@ -137,7 +137,7 @@ namespace GYM93.Service
         {
             var thanhviens = _appDbContext.ThanhViens
                 .Where(n => n.Ten.Contains(term))
-                .Select(n => new { n.Ten, n.ThanhVienId })
+                .Select(n => new { n.Ten, n.ThanhVienId , n.HinhAnhTv })
                 .ToList();
 
             return new JsonResult(thanhviens);
