@@ -25,8 +25,6 @@ public partial class HoaDon
     [Range(1, 12, ErrorMessage = "Số Tháng Đăng Ký Phải Nằm Trong Khoảng Từ {1} đến {2}")]
     public int ThangDangKy { get; set; } 
 
-    public DateTime NgayBatDau { get; set; } 
-    public DateTime NgayKetThuc { get; set; }
     [DisplayName("Thành Viên Thanh Toán")]
 
     public virtual ThanhVien? ThanhVien { get; set; }

@@ -133,12 +133,12 @@ namespace GYM93.Service
             return _appDbContext.ThanhViens.Any(e => e.ThanhVienId == id);
         }
 
-        public async Task<IActionResult> SearchThanhVien(string term)
+        public JsonResult SearchThanhVien(string term)
         {
-            var thanhviens = await _appDbContext.ThanhViens
+            var thanhviens = _appDbContext.ThanhViens
                 .Where(n => n.Ten.Contains(term))
                 .Select(n => new { n.Ten, n.ThanhVienId })
-                .ToListAsync();
+                .ToList();
 
             return new JsonResult(thanhviens);
         }

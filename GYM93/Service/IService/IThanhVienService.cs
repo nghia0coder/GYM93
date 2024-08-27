@@ -11,7 +11,7 @@ namespace GYM93.Service.IService
         Task<IEnumerable<ThanhVien>> ThanhVienGetAll();
         Task<ThanhVien> GetThanhVienById(int? thanhVienId);
 
-        Task<IActionResult> SearchThanhVien(string term);
+        JsonResult SearchThanhVien(string term);
         bool ThanhVienExists(int thanhVienId);
     }
 }

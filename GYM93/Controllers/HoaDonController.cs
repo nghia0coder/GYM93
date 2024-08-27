@@ -62,8 +62,7 @@ namespace GYM93.Controllers
             if (ModelState.IsValid)
             {   
                 hoaDon.NgayThanhToan = DateTime.Now;
-                hoaDon.NgayBatDau = DateTime.Now;
-                hoaDon.NgayKetThuc = DateTime.Now;
+     
                 _context.Add(hoaDon);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
