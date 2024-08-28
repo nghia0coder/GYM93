@@ -35,6 +35,19 @@ namespace GYM93.Controllers
             }
             
         }
+        public async Task<IActionResult> GetAllThanhVien()
+        {
+            try
+            {
+                return Json(new { data = await _thanhVienSerivce.ThanhVienGetAll() });
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return View();
+            }
+
+        }
 
         // GET: ThanhVien/Details/5
         public async Task<IActionResult> Details(int? id)
