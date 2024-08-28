@@ -1,11 +1,15 @@
 ﻿var dataTable;
 
+$(document).ready(function () {
+    loadDataTable();
+});
+
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: "/thanhvien/index" },
+        "ajax": { url: "/thanhvien/GetAllThanhVien" },
         "columns": [
-            { data: 'hovatendem', "width": '5%' },
-            { data: 'ten', "width" : '25%'}
+            { data: 'hoVaTenDem', "width": '25%' },
+            { data: 'ten', "width": '5%' }
         ]
     })
 }
