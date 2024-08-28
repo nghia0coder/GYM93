@@ -19,6 +19,9 @@
                 @Html.DisplayNameFor(model => model.ThanhVien)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ThangDangKy)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.NgayThanhToan)
             </th>
             <th>
@@ -36,6 +39,9 @@
             <td>
                 @item.ThanhVien?.Ten
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThangDangKy)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NgayThanhToan)
             </td>
@@ -44,7 +50,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.HoaDonId">Chỉnh Sửa</a> |
-                <a asp-action="Details" asp-route-id="@item.HoaDonId">Xem Chi Tiết</a> |
+       
                 <a asp-action="Delete" asp-route-id="@item.HoaDonId">Xóa </a>
             </td>
         </tr>

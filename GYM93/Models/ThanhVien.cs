@@ -13,7 +13,7 @@ public partial class ThanhVien
     [MinLength(3, ErrorMessage = "Họ và Tên Đệm phải có ít nhất 3 ký tự.")]
     public string? HoVaTenDem { get; set; }
     [Display(Name = "Tên Thành Viên")]
-    [Required(ErrorMessage = "Vui Lòng Nhập Tên")]
+    [Required(ErrorMessage = "Vui Lòng Nhập Tên")] 
     public string Ten { get; set; } = null!;
     [Display(Name = "Số Điện Thoại")]
     [Required(ErrorMessage = "Vui Lòng Nhập Số Điện Thoại")]
@@ -24,17 +24,19 @@ public partial class ThanhVien
     [Display(Name = "Biển Số Xe")]
     [Required(ErrorMessage = "Vui Lòng Nhập Biển Số Xe")]
     public string BienSoXe { get; set; } = null!;
-    [Display(Name = "Ngày Tham Gia")]
+    [Display(Name = "Ngày Tham Gia Câu Lạc Bộ")]
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime? NgayThamGia { get; set; }
 
+    [Display(Name = "Ngày Hội Viên Bắt Đầu")]
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-
-
     public DateTime? NgayBatDau { get; set; }
-    public DateTime? NgayKetThuc { get; set; }
-    public decimal SoTienDaDong { get; set; } 
 
+    [Display(Name = "Thời Gian Kết Thúc Hội Viên")]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+    public DateTime? NgayKetThuc { get; set; }
+    public decimal SoTienDaDong { get; set; }
+    [Display(Name = "Hình Ảnh Thành Viên")]
     public string? HinhAnhTv { get; set; }
     [Display(Name = "Hình Ảnh Thành Viên")]
     [NotMapped]

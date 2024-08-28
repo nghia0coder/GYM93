@@ -37,7 +37,7 @@
     }).autocomplete("instance")._renderItem = function (ul, item) {
         // Tạo giao diện tùy chỉnh cho mỗi item với hình ảnh
         return $("<li>")
-            .append("<div><img src='/" + item.img + "' alt='Image' style='width:100px; height:100px; margin-right:10px;' />" + item.label + "</div>")
+            .append("<div><img src='/" + item.img + "' alt='Image' style='width:100px; height:100px;  object-fit: cover; margin-right:10px;' />" + item.label + "</div>")
             .appendTo(ul);
     };;
     // Ngăn chặn phím lên và phím xuống điều chỉnh giá trị ô nhập liệu

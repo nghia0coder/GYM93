@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GYM93.Data;
 using GYM93.Models;
+using GYM93.Service.IService;
 
 namespace GYM93.Controllers
 {
     public class HoaDonController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IHoaDonService _hoaDonService;
 
-        public HoaDonController(AppDbContext context)
+        public HoaDonController(AppDbContext context, IHoaDonService hoaDonService)
         {
             _context = context;
+            _hoaDonService = hoaDonService;
         }
 
         // GET: HoaDon
@@ -57,15 +60,21 @@ namespace GYM93.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HoaDonId,ThanhVienId,TongTien,ThangDangKy")] HoaDon hoaDon)
+        public async Task<IActionResult> Create([Bind("HoaDonId,ThanhVienId,NgayThanhToan,TongTien,ThangDangKy")] HoaDon hoaDon)
         {
             if (ModelState.IsValid)
-            {   
-                hoaDon.NgayThanhToan = DateTime.Now;
-     
-                _context.Add(hoaDon);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            {
+                try
+                {
+                    await _hoaDonService.HoaDonCreate(hoaDon);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+              
             }
             ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten", hoaDon.ThanhVienId);
             return View(hoaDon);

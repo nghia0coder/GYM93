@@ -10,6 +10,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IThanhVienService, ThanhVienService>();
+builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 
 var app = builder.Build();
 
