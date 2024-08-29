@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Tạo Thành Viên Mới</a>
 </p>
-<table id="tblData" class="table">
+<table id="tblData">
     <thead>
         <tr>
             <th>
@@ -18,7 +18,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Ten)
             </th>
-         
+            <th>
+                @Html.DisplayNameFor(model => model.HinhAnhTv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sđt)
+            </th>
+            <th>
+                Thao Tác
+            </th>
+
+
+ 
         </tr>
     </thead>
   
