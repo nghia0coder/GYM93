@@ -14,8 +14,8 @@ function loadDataTable() {
             console.error("Error loading data:", error, code);
         },
         "columns": [
-            { data: 'hoVaTenDem', "width": '5%' },
-            { data: 'ten', "width": '5%' },
+            { data: 'hoVaTenDem', "width": '20%' },
+            { data: 'ten', "width": '10%' },
             {
                 data: 'hinhAnhTv',
                 "render": function (data) {
@@ -25,11 +25,11 @@ function loadDataTable() {
                         return `<img src="/default-image.jpg" alt="Không có hình ảnh" class="img-thumbnail" />`;
                     }
                 },
-                "width": '10%',
+                "width": '15%',
                 "defaultContent": ""
             },
             {
-                data: 'sđt', "width": '5%'
+                data: 'sđt', "width": '10%'
             },
             {
                 data: null, // Cột này không lấy dữ liệu từ server
