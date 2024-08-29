@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Tạo Thành Viên Mới</a>
 </p>
-<table id="tblData">
+<table id="tblData" class="table">
     <thead>
         <tr>
             <th>
@@ -19,21 +19,36 @@
                 @Html.DisplayNameFor(model => model.Ten)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HinhAnhTv)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Sđt)
             </th>
             <th>
-                Thao Tác
+                @Html.DisplayNameFor(model => model.HinhAnhTv)
             </th>
-
-
- 
+            <th>Thao Tác</th>
         </tr>
     </thead>
-  
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoVaTenDem)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ten)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sđt)
+                </td>
+                <td>
+                    <img src="/@item.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-thumbnail" />
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ThanhVienId">Chỉnh Sửa Thông Tin</a> |
+                    <a asp-action="Details" asp-route-id="@item.ThanhVienId">Thông Tin Tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ThanhVienId">Xóa Thành Viên</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
-@section Scripts {
-    <script src="~/js/thanhvien.js"></script>
-}
