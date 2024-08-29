@@ -15,17 +15,17 @@ function previewImage(event) {
 }
 
 
-document.getElementById("tongTienInput").addEventListener("input", function (e) {
-    let value = e.target.value.replace(/[^0-9]/g, '')
-    if (value.length > 0) {
-        value = parseFloat(value).toLocaleString();
-    }
-    e.target.value = value ? value + ' VNĐ' : '';
-    document.getElementById("tongTienHidden").value = value.replace(/[^0-9]/g, '');
-})
-document.getElementById("tongTienInput").addEventListener("blur", function () {
-    validateInput();
-})
+//document.getElementById("tongTienInput").addEventListener("input", function (e) {
+//    let value = e.target.value.replace(/[^0-9]/g, '')
+//    if (value.length > 0) {
+//        value = parseFloat(value).toLocaleString();
+//    }
+//    e.target.value = value ? value + ' VNĐ' : '';
+//    document.getElementById("tongTienHidden").value = value.replace(/[^0-9]/g, '');
+//})
+//document.getElementById("tongTienInput").addEventListener("blur", function () {
+//    validateInput();
+//})
 
 function validateInput() {
 
