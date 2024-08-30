@@ -25,6 +25,7 @@ public partial class ThanhVien
     [Required(ErrorMessage = "Vui Lòng Nhập Biển Số Xe")]
     public string BienSoXe { get; set; } = null!;
     [Display(Name = "Ngày Tham Gia Câu Lạc Bộ")]
+  
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime? NgayThamGia { get; set; }
 
