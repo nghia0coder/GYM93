@@ -1,5 +1,54 @@
 ﻿.img-thumbnail {
     width: 150px;
     height: 150px;
-    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    object-fit: cover; 
 }
+.image-preview-container {
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .image-preview-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* Hoặc sử dụng cover nếu bạn muốn hình ảnh che phủ toàn bộ khung mà không để lại khoảng trống */
+    }
+
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+    .search-container input {
+        max-width: 300px;
+        border-radius: 20px;
+        padding: 10px;
+    }
+
+table img {
+    max-width: 100px;
+    border-radius: 50%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+    .pagination button {
+        border-radius: 50px;
+        margin: 0 10px;
+        padding: 10px 20px;
+    }
+
+    .pagination span {
+        font-size: 1.2rem;
+        margin: 0 10px;
+    }
+

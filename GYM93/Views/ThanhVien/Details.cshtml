@@ -4,75 +4,76 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Thông Tin Chi Tiết Thành Viên</h1>
-
-<div>
+<div class="container mt-4">
+    <h1>Thông Tin Chi Tiết Thành Viên</h1>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoVaTenDem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoVaTenDem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ten)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ten)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sđt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sđt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GioiTinh)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.GioiTinh == true)
-            {
-                @:Nam
-            }
-            else
-            {
-                @:Nữ
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BienSoXe)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BienSoXe)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayThamGia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgayThamGia)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayBatDau)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NgayBatDau)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayKetThuc)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NgayKetThuc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HinhAnhTv)
-        </dt>
-        <dd class = "col-sm-10">
-            <img src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-thumbnail" />
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ThanhVienId">Chỉnh Sửa</a> |
-    <a asp-action="Index">Trở Về Danh Sách</a>
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Placeholder for the image -->
+            <img src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
+        </div>
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.HoVaTenDem)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.HoVaTenDem)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Ten)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Ten)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Sđt)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Sđt)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.GioiTinh)
+                </dt>
+                <dd class="col-sm-8">
+                    @if (Model.GioiTinh == true)
+                    {
+                        @:Nam
+                    }
+                    else
+                    {
+                        @:Nữ
+                    }
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.BienSoXe)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.BienSoXe)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.NgayThamGia)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.NgayThamGia)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.NgayBatDau)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.NgayBatDau)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.NgayKetThuc)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.NgayKetThuc)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model?.ThanhVienId" class="btn btn-warning">Chỉnh Sửa</a>
+        <a asp-action="Index" class="btn btn-secondary">Trở Về Danh Sách</a>
+    </div>
 </div>

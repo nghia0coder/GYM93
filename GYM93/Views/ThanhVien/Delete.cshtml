@@ -4,66 +4,71 @@
     ViewData["Title"] = "Delete";
 }
 
+<div class="container mt-4">
+    <div class="alert alert-warning">
+        <h3 class="alert-heading">Bạn Có Chắc Muốn Xóa Thành Viên Này Chứ?</h3>
+        <p class="mb-0">Dữ Liệu Của Thành Viên Này Sẽ Mất Mãi Mãi Trên Hệ Thống</p>
+    </div>
 
-<h3>Bạn Có Chắc Muốn Xóa Thành Viên Này Chứ?</h3>
-<div>
-    <h5>Dữ Liệu Của Thành Viên Này Sẽ Mất Mãi Mãi Trên Hệ Thống</h5>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoVaTenDem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoVaTenDem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ten)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ten)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sđt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sđt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GioiTinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.GioiTinh == true)
-            {
-                @:Nam
-            }
-            else
-            {
-                @:Nữ
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BienSoXe)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BienSoXe)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayThamGia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgayThamGia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HinhAnhTv)
-        </dt>
-        <dd class = "col-sm-10">
-            <img src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-thumbnail" />
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ThanhVienId" />
-        <input type="submit" value="Xóa" class="btn btn-danger" /> |
-        <a asp-action="Index">Trở Về Danh Sách</a>
-    </form>
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Placeholder for the image -->
+            <img src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid img-thumbnail" />
+        </div>
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.HoVaTenDem)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.HoVaTenDem)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Ten)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Ten)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Sđt)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Sđt)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.GioiTinh)
+                </dt>
+                <dd class="col-sm-8">
+                    @if (Model.GioiTinh == true)
+                    {
+                        @:Nam
+                    }
+                    else
+                    {
+                        @:Nữ
+                    }
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.BienSoXe)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.BienSoXe)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.NgayThamGia)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.NgayThamGia)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <form asp-action="Delete" method="post" class="form-inline">
+            <input type="hidden" asp-for="ThanhVienId" />
+            <button type="submit" class="btn btn-danger mr-2">Xóa</button>
+            <a asp-action="Index" class="btn btn-secondary">Trở Về Danh Sách</a>
+        </form>
+    </div>
 </div>
