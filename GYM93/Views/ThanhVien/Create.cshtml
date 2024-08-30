@@ -46,21 +46,24 @@
                     Tải Hình Ảnh Lên
                 </button>
 
-                <!-- Placeholder for the image preview -->
-                <div id="imagePreview" style="margin-top: 10px;">
-                    <img id="preview" src="#" alt="Image preview" class="img-thumbnail" style="display:none;" />
-                </div>
+              
        
             </div>
             <div class="form-group">
-                <input type="submit" value="Tạo Mới" class="btn btn-primary" />
+                <input type="submit" value="Tạo Mới" class="btn btn-success" />
             </div>
         </form>
+    </div>
+    <div class="col-md-8">
+        <!-- Placeholder for the image preview -->
+        <div id="imagePreview" class="image-preview-container" style="margin-top: 10px;">
+            <img id="preview" src="#" alt="Image preview"  style="display:none; width: 100%; height:auto" />
+        </div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Trở Về Danh Sách</a>
+    <a asp-action="Index" class="btn btn-secondary">Trở Về Danh Sách</a>
 </div>
 
 @section Scripts {
