@@ -6,6 +6,7 @@
 
 <h1>Danh Sách Thành Viên</h1>
 
+<input type="text" id="searchInput" placeholder="Tìm kiếm thành viên..." oninput="fetchData()" />
 <p>
     <a asp-action="Create">Tạo Thành Viên Mới</a>
 </p>
@@ -16,39 +17,104 @@
                 @Html.DisplayNameFor(model => model.HoVaTenDem)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ten)
+                <a href="#" onclick="fetchData('Ten')">Tên <i id="sortIcon" class="fa"></i></a>
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Sđt)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HinhAnhTv)
-            </th>
+            <th>Hình Ảnh</th>
             <th>Thao Tác</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HoVaTenDem)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ten)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sđt)
-                </td>
-                <td>
-                    <img src="/@item.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-thumbnail" />
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ThanhVienId">Chỉnh Sửa Thông Tin</a> |
-                    <a asp-action="Details" asp-route-id="@item.ThanhVienId">Thông Tin Tiết</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ThanhVienId">Xóa Thành Viên</a>
-                </td>
-            </tr>
-        }
+       
     </tbody>
 </table>
+
+<div id="pagination">
+    <button onclick="prevPage()">Previous</button>
+    <span id="pageInfo"></span>
+    <button onclick="nextPage()">Next</button>
+</div>
+
+@section Scripts {
+    <script>
+        var currentPage = 1;
+        var pageSize = 5;
+        var sortBy;
+        var sortAscending = true;
+        var totalPages = 0;
+        function fetchData(sortColumn) {
+            // Cập nhật cột sắp xếp nếu có
+            if (sortColumn) {
+                sortBy = sortColumn;
+                sortAscending = !sortAscending; // Đổi hướng sắp xếp
+            }
+
+            var searchQuery = document.getElementById('searchInput').value;
+
+            var url = `/thanhvien/getmembers?searchQuery=${searchQuery}&pageNumber=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&sortAscending=${sortAscending}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    updateTable(data.value);
+                    updatePagination(data.value);
+                    updateSortIcon(sortBy);
+                });
+        }
+
+        function updateTable(data) {
+            var tableBody = document.querySelector('#tblData tbody');
+            tableBody.innerHTML = '';
+            totalPages = data.totalPages;
+            data.members.forEach(function (member) {
+                var row = `<tr>
+                              <td>${member.hoVaTenDem}</td>
+                              <td>${member.ten}</td>
+                              <td>${member.sđt}</td>
+                              <td><img src="/${member.hinhAnhTv}" alt="Hình Ảnh Thành Viên Gym93" class="img-thumbnail" /></td>
+                              <td>
+                                  <a href="/ThanhVien/Edit/${member.thanhVienId}">Chỉnh Sửa Thông Tin</a> |
+                                  <a href="/ThanhVien/Details/${member.thanhVienId}">Thông Tin Tiết</a> |
+                                  <a href="/ThanhVien/Delete/${member.thanhVienId}">Xóa Thành Viên</a>
+                              </td>
+                           </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function updatePagination(data) {
+            document.getElementById('pageInfo').textContent = `Page ${data.pageNumber} of ${data.totalPages}`;
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                fetchData();
+            }
+        }
+     
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchData();
+            }
+        }
+
+        // Tải dữ liệu lần đầu khi trang được load
+        fetchData();
+
+        function updateSortIcon(sortBy) {
+            var sortIcon = document.getElementById('sortIcon');
+
+            if (sortAscending) {
+                sortIcon.className = "fa fa-arrow-up"; // Mũi tên hướng lên
+            } else {
+                sortIcon.className = "fa fa-arrow-down"; // Mũi tên hướng xuống
+            }
+        }
+    </script>
+}

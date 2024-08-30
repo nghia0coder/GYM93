@@ -33,7 +33,7 @@ namespace GYM93.Controllers
                 TempData["error"] = ex.Message;
                 return View();
             }
-            
+
         }
         public async Task<IActionResult> GetAllThanhVien()
         {
@@ -80,10 +80,10 @@ namespace GYM93.Controllers
         public async Task<IActionResult> Create([Bind("ThanhVienId,HoVaTenDem,Ten,Sđt,GioiTinh,BienSoXe,Image")] ThanhVien thanhVien)
         {
             if (ModelState.IsValid)
-            {   
+            {
                 await _thanhVienSerivce.ThanhVienCreate(thanhVien);
                 return RedirectToAction(nameof(Index));
-            }  
+            }
             return View(thanhVien);
         }
 
@@ -142,10 +142,27 @@ namespace GYM93.Controllers
         [HttpGet]
         public JsonResult SearchThanhVien(string term)
         {
-            var thanhviens = _thanhVienSerivce.SearchThanhVien(term); 
-            return Json(thanhviens);
+            var thanhviens = _thanhVienSerivce.SearchThanhVien(term);
+            return new JsonResult(thanhviens);
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetMembers(string searchQuery = "", // Chuỗi tìm kiếm
+                                    int pageNumber = 1, // Số trang hiện tại
+                                    int pageSize = 10, // Số lượng mục trên mỗi trang
+                                    string sortBy = "Name", // Cột sắp xếp
+                                    bool sortAscending = true)
+        {
+            try
+            {
+                var result = await _thanhVienSerivce.GetMembersAsync(searchQuery, pageNumber, pageSize, sortBy, sortAscending);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        } 
         // POST: ThanhVien/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

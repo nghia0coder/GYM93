@@ -11,6 +11,12 @@ namespace GYM93.Service.IService
         Task<IEnumerable<ThanhVien>> ThanhVienGetAll();
         Task<ThanhVien> GetThanhVienById(int? thanhVienId);
 
+        Task<JsonResult> GetMembersAsync(string searchQuery, 
+                              int pageNumber = 1,
+                              int pageSize = 10,
+                              string sortBy = "Tên",
+                              bool sortAscending = true);
+
         JsonResult SearchThanhVien(string term);
         bool ThanhVienExists(int thanhVienId);
     }
