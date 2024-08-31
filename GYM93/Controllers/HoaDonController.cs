@@ -27,8 +27,12 @@ namespace GYM93.Controllers
         {
             var appDbContext = _context.HoaDons.Include(h => h.ThanhVien);
             return View(await appDbContext.ToListAsync());
-        } 
-
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllHoaDon()
+        {
+            return Json(new { data = await _hoaDonService.GetAllHoaDon() });
+        }
         // GET: HoaDon/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -54,7 +58,7 @@ namespace GYM93.Controllers
             ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten");
             return View();
         }
-
+        
         // POST: HoaDon/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

@@ -4,56 +4,30 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Danh Sách Hóa Đơn</h1>
 
-<p>
-    <a asp-action="Create">Tạo Hóa Đơn Mới</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.HoaDonId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ThanhVien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ThangDangKy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayThanhToan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TongTien)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoaDonId)
-            </td>
-            <td>
-                @item.ThanhVien?.Ten
-            </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ThangDangKy)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayThanhToan)
-            </td>
-            <td>
-                @String.Format("{0:N0} VNĐ", item.TongTien)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.HoaDonId">Chỉnh Sửa</a> |
-       
-                <a asp-action="Delete" asp-route-id="@item.HoaDonId">Xóa </a>
-            </td>
-        </tr>
+<div class="container">
+    <h1 class="mb-4 text-primary">Danh Sách Hóa Đơn</h1>
+    <p>
+        <a href="/hoadon/create" class="btn btn-success">Tạo Hóa Đơn Mới</a>
+    </p>
+    <table id="tblData" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.HoaDonId)</th>
+                <th>@Html.DisplayNameFor(model => model.ThanhVien)</th>
+                <th>@Html.DisplayNameFor(model => model.ThangDangKy)</th>
+                <th>@Html.DisplayNameFor(model => model.NgayThanhToan)</th>
+                <th>@Html.DisplayNameFor(model => model.TongTien)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be loaded here by DataTables -->
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/orderdatatable.js"></script>
+ 
+
 }
-    </tbody>
-</table>
