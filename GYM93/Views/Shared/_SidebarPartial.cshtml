@@ -115,11 +115,18 @@
     <div class="sidebar-heading">
         Quản Lý
     </div>
-    <!-- Management Membership -->
+    <!-- Member -->
     <li class="nav-item">
         <a class="nav-link" asp-action="Index" asp-controller="ThanhVien">
             <i class="fa-solid fa-people-group"></i>
             <span>Thành Viên</span>
+        </a>
+    </li>
+    <!-- Management Member -->
+    <li class="nav-item">
+        <a class="nav-link" asp-action="ThanhVienStatus" asp-controller="ThanhVien">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Quản Lý Thành Viên</span>
         </a>
     </li>
     <!-- Management Bill -->

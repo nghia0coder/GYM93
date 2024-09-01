@@ -3,6 +3,23 @@
     height: 150px;
     object-fit: cover; 
 }
+table.dataTable thead > tr > th.dt-orderable-asc {
+    padding-right: 15px !important;
+}
+
+.custom-progress {
+    background-color: lightgrey;
+    margin-top: 60px;
+    height: 30px; /* Chiều cao tùy chỉnh */
+    border-radius: 15px; /* Bo tròn 2 đầu của container */
+}
+
+.custom-progress-bar {
+    font-size: 15px;
+    border-radius: 15px; /* Bo tròn 2 đầu của thanh progress */
+}
+
+
 .image-preview-container {
     width: 500px;
     height: 500px;
@@ -52,3 +69,45 @@ table img {
         margin: 0 10px;
     }
 
+
+
+.container {
+    margin-top: 30px;
+}
+
+.table {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .table thead th {
+        background-color: #343a40;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .table td {
+        text-align: center;
+    }
+
+.btn-custom {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+}
+
+    .btn-custom:hover {
+        background-color: #0056b3;
+    }
+
+.highlight {
+    background-color: #d4edda;
+    color: #155724;
+}

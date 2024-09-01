@@ -1,6 +1,7 @@
 ﻿using GYM93.Data;
 using GYM93.Models;
 using GYM93.Service.IService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GYM93.Service
@@ -18,8 +19,8 @@ namespace GYM93.Service
 
         public async Task HoaDonCreate(HoaDon hoaDon)
         {
-            //hoaDon.NgayThanhToan = DateTime.Now;
-            //Update membership 
+            hoaDon.NgayThanhToan = DateTime.Now;
+            //Update membership
             ThanhVien thanhVien = await _thanhVienService.GetThanhVienById(hoaDon.ThanhVienId);
             if (hoaDon.NgayThanhToan.Year == thanhVien.NgayBatDau?.Year &&
                hoaDon.NgayThanhToan.Month == thanhVien.NgayBatDau?.Month)
@@ -30,12 +31,31 @@ namespace GYM93.Service
             {
                 thanhVien.NgayBatDau = hoaDon.NgayThanhToan;
                 thanhVien.NgayKetThuc = hoaDon.NgayThanhToan.AddMonths(hoaDon.ThangDangKy);
-            }    
+            }
 
-            //
+            thanhVien.SoTienDaDong += hoaDon.TongTien;
             _appDbContext.ThanhViens.Update(thanhVien);
             _appDbContext.Add(hoaDon);
             await _appDbContext.SaveChangesAsync();
         }
+        public async Task<object> GetAllHoaDon()
+        {
+            var hoaDons = await _appDbContext.HoaDons
+                .Include(h => h.ThanhVien) // Bao gồm bảng ThanhVien
+                .OrderByDescending(h => h.NgayThanhToan)
+                .Select(h => new
+                {
+                    h.HoaDonId,
+                    TenThanhVien = h.ThanhVien.Ten,
+                    h.NgayThanhToan,
+                    h.ThangDangKy,
+                    h.TongTien
+                })
+                .OrderByDescending(n => n.NgayThanhToan)
+                .ToListAsync();
+
+            return hoaDons;
+        }
+
     }
 }
