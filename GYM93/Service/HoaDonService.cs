@@ -31,9 +31,9 @@ namespace GYM93.Service
             {
                 thanhVien.NgayBatDau = hoaDon.NgayThanhToan;
                 thanhVien.NgayKetThuc = hoaDon.NgayThanhToan.AddMonths(hoaDon.ThangDangKy);
-            }    
+            }
 
-            //
+            thanhVien.SoTienDaDong += hoaDon.TongTien;
             _appDbContext.ThanhViens.Update(thanhVien);
             _appDbContext.Add(hoaDon);
             await _appDbContext.SaveChangesAsync();

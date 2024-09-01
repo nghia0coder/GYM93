@@ -53,9 +53,9 @@ namespace GYM93.Controllers
         }
 
         // GET: HoaDon/Create
-        public IActionResult Create()
+        public IActionResult Create(int? thanhVienId)
         {
-            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten");
+            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten",thanhVienId);
             return View();
         }
         

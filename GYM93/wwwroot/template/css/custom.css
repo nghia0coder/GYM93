@@ -7,6 +7,18 @@ table.dataTable thead > tr > th.dt-orderable-asc {
     padding-right: 15px !important;
 }
 
+.custom-progress {
+    background-color: lightgrey;
+    margin-top: 60px;
+    height: 30px; /* Chiều cao tùy chỉnh */
+    border-radius: 15px; /* Bo tròn 2 đầu của container */
+}
+
+.custom-progress-bar {
+    font-size: 15px;
+    border-radius: 15px; /* Bo tròn 2 đầu của thanh progress */
+}
+
 
 .image-preview-container {
     width: 500px;

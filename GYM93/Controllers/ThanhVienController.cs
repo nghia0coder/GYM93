@@ -162,7 +162,37 @@ namespace GYM93.Controllers
             {
                 throw new Exception(ex.Message);
             }
-        } 
+        }
+        public async Task<IActionResult> ThanhVienStatus()
+        {
+            try
+            {
+                return View(await _thanhVienSerivce.ThanhVienGetAll());
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return View();
+            }
+
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetMembersStatus(string searchQuery = "", // Chuỗi tìm kiếm
+                                   int pageNumber = 1, // Số trang hiện tại
+                                   int pageSize = 10, // Số lượng mục trên mỗi trang
+                                   string sortBy = "Ten", // Cột sắp xếp
+                                   bool sortAscending = true)
+        {
+            try
+            {
+                var result = await _thanhVienSerivce.GetMembersAsync(searchQuery, pageNumber, pageSize, sortBy, sortAscending);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         // POST: ThanhVien/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
