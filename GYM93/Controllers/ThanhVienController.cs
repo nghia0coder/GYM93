@@ -147,6 +147,20 @@ namespace GYM93.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> GetThanhVienById(int thanhVienId)
+        {
+            var thanhvien = await _thanhVienSerivce.GetThanhVienById(thanhVienId);
+
+            var result = new
+            {
+                thanhvien.ThanhVienId,
+                thanhvien.Ten,
+                thanhvien.HinhAnhTv // Ví dụ: lấy cột hình ảnh thành viên
+            };
+            return Json(result);
+        }
+
+        [HttpGet]
         public async Task<JsonResult> GetMembers(string searchQuery = "", // Chuỗi tìm kiếm
                                     int pageNumber = 1, // Số trang hiện tại
                                     int pageSize = 10, // Số lượng mục trên mỗi trang

@@ -26,6 +26,17 @@
         select: function (event, ui) {
             $("#searchThanhVien").val(ui.item.label);
             $("input[name='ThanhVienId']").val(ui.item.value);
+
+
+      
+            // Tạo thẻ img chứa hình ảnh
+            var imgTag = `
+            <img src="/${ui.item.img}" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
+        `;
+
+            // Chèn hình ảnh vào bên trong div với id displayImage
+            $("#displayImage").html(imgTag);
+
             return false;
         },
         focus: function (event, ui) {
@@ -40,6 +51,32 @@
             .append("<div><img src='/" + item.img + "' alt='Image' style='width:100px; height:100px;  object-fit: cover; margin-right:10px;' />" + item.label + "</div>")
             .appendTo(ul);
     };;
+
+    // Thiết lập giá trị ban đầu của ô input nếu có
+    var initialValue = $("#ThanhVienId").val(); // Lấy giá trị từ thẻ hidden
+    if (initialValue) {
+        // Gửi AJAX request để lấy thông tin thành viên dựa trên ThanhVienId
+        $.ajax({
+            url: '/ThanhVien/GetThanhVienById', // API để lấy thông tin thành viên theo id
+            data: { thanhVienid: initialValue }, // Gửi ThanhVienId trong request
+            success: function (data) {
+                if (data) {
+                    var imgTag = `
+            <img src="/${data.hinhAnhTv}" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
+        `;
+                    // Gán tên thành viên vào input search
+                    $("#searchThanhVien").val(data.ten); // Hiển thị tên thành viên
+                    $("#displayImage").html(imgTag);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error); // Xử lý lỗi nếu có
+            }
+        });
+    }
+
+
+
     // Ngăn chặn phím lên và phím xuống điều chỉnh giá trị ô nhập liệu
     $("#searchThanhVien").on('keydown', function (event) {
         // Phím lên

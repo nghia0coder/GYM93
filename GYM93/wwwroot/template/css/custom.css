@@ -18,6 +18,17 @@ table.dataTable thead > tr > th.dt-orderable-asc {
     font-size: 15px;
     border-radius: 15px; /* Bo tròn 2 đầu của thanh progress */
 }
+.progress-text {
+    position: absolute;
+    top: 15px; /* Thay thế cho margin-top */
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    color: black;
+    pointer-events: none;
+}
 
 
 .image-preview-container {
