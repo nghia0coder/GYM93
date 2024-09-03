@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IThanhVienService, ThanhVienService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
-
+builder.Services.AddScoped<IThongKeService, ThongKeService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
