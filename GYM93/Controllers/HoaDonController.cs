@@ -53,9 +53,11 @@ namespace GYM93.Controllers
         }
 
         // GET: HoaDon/Create
+        [HttpGet]
+        [Route("hoadon/create/{thanhVienId?}")]
         public IActionResult Create(int? thanhVienId)
         {
-            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten",thanhVienId);
+            ViewData["ThanhVienId"] = thanhVienId;
             return View();
         }
         
@@ -64,7 +66,7 @@ namespace GYM93.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HoaDonId,ThanhVienId,NgayThanhToan,TongTien,ThangDangKy")] HoaDon hoaDon)
+        public async Task<IActionResult> Create([Bind("HoaDonId,ThanhVienId,TongTien,ThangDangKy")] HoaDon hoaDon)
         {
             if (ModelState.IsValid)
             {

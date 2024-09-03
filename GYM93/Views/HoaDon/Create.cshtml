@@ -8,13 +8,14 @@
 
 <hr />
 <div class="row">
+ 
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ThanhVienId" class="control-label"></label>
                 <input id="searchThanhVien"  type="text" class="form-control" placeholder="Tìm thành viên..." />
-                <input type="hidden" asp-for="ThanhVienId" />
+                <input type="hidden" asp-for="ThanhVienId" id="ThanhVienId" value="@ViewData["ThanhVienId"]" />
                 <span asp-validation-for="ThanhVienId" class="text-danger"></span>
             </div>
          
@@ -32,17 +33,20 @@
                 <input id="tongTienHidden" asp-for="TongTien" type="hidden" />
                 <span id="validationMessage" asp-validation-for="TongTien" class="text-danger"></span>
             </div>
+        
             <div class="form-group">
                 <input type="submit" value="Xác Nhận" class="btn btn-primary" />
             </div>
-        
+            <div>
+                <a asp-action="Index" class="btn btn-secondary">Trở Về Danh Sách</a>
+            </div>
         </form>
+    </div>
+    <div class="col-md-3" id="displayImage">
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Trở Về Danh Sách</a>
-</div>
+
 
 @section Scripts {
     <script src="~/js/autocomplete.js" asp-append-version="true"></script>
