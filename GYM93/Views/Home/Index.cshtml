@@ -100,11 +100,177 @@
 </div>
 
 <!-- Content Row -->
+<div>
+    <!-- Hàng 1 -->
+    <div class="chart-row">
+        <div class="chart-container">
+            <canvas id="chart1"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="chart2"></canvas>
+        </div>
+    </div>
 
-<div class="row">
+    <!-- Hàng 2 -->
+    <div class="chart-row">
+        <div class="small-chart">
+            <canvas id="chart3"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="chart4"></canvas>
+        </div>
+    </div>
 </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        fetch('/Home/GetRevenueChart')
+            .then(response => response.json())
+            .then(data => {
+                chart1.data.labels = data.labels;
+                chart1.data.datasets[0].data = data.data;
+                chart1.update();
+            });
+
+        fetch('/Home/GetMonthlyRegistrations')
+            .then(response => response.json())
+            .then(data => {
+                var currentMonth = new Date().getMonth() + 1; // Tháng hiện tại (1-12)
+                var months = Array.from({ length: currentMonth }, (_, i) => `Tháng ${i + 1}`);
+
+                // Gán labels và data cho biểu đồ
+                chart2.data.labels = months;
+                chart2.data.datasets[0].data = data.map(d => d.count);
+                chart2.update();
+            });
+        fetch('/Home/GetMonthlyRevenueGrowth')
+            .then(response => response.json())
+            .then(data => {
+                const currentMonth = new Date().getMonth() + 1; // Tháng hiện tại (1-12)
+                const months = Array.from({ length: currentMonth }, (_, i) => `Tháng ${i + 1}`);
+
+              
+              
+                // Tạo dữ liệu cho biểu đồ
+                const revenueChanges = months.map(month => {
+                    const monthNumber = parseInt(month.slice(-1)); // Lấy số tháng từ label
+                    const monthData = data.find(d => d.month === monthNumber);
+                    return monthData ? monthData.revenueChange : 0;
+                });
+
+                // Cập nhật biểu đồ
+                chart4.data.labels = months;
+                chart4.data.datasets[0].data = revenueChanges;
+
+             
+                chart4.update();
+            });
+
+
+
+        // Data cho biểu đồ 1 - Tổng doanh thu theo tháng
+        var ctx1 = document.getElementById('chart1').getContext('2d');
+        var chart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+                datasets: [{
+                    label: 'Tổng Doanh Thu',
+                    data: [12000, 15000, 10000, 20000, 17000],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Data cho biểu đồ 2 - Số lượng hóa đơn theo tháng
+        var ctx2 = document.getElementById('chart2').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+                datasets: [{
+                    label: 'Số Lượng Thành Viên Mới',
+                    data: [10, 12, 8, 15, 13],
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Data cho biểu đồ 3 - Doanh thu theo từng thành viên
+        var ctx3 = document.getElementById('chart3').getContext('2d');
+        var chart3 = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: ['Thành viên 1', 'Thành viên 2', 'Thành viên 3', 'Thành viên 4'],
+                datasets: [{
+                    label: 'Doanh Thu',
+                    data: [5000, 7000, 3000, 4000],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Data cho biểu đồ 4 - Tăng trưởng doanh thu theo tháng
+        var ctx4 = document.getElementById('chart4').getContext('2d');
+        var chart4 = new Chart(ctx4, {
+            type: 'line',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+                datasets: [{
+                    label: 'Tăng Trưởng Doanh Thu',
+                    data: [5, 10, -3, 15, -2],
+                    fill: false,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    </script>
+}

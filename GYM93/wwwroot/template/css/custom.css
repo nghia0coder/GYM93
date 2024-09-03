@@ -122,3 +122,20 @@ table img {
     background-color: #d4edda;
     color: #155724;
 }
+.chart-row {
+    display: flex; /* Sử dụng flexbox để sắp xếp các biểu đồ trong cùng một hàng */
+    justify-content: space-between; /* Đảm bảo khoảng cách giữa các biểu đồ */
+    margin-bottom: 50px; /* Khoảng cách giữa các hàng */
+}
+.chart-container {
+    width: 45%;
+    margin-top: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.small-chart {
+    width: 400px; /* Đặt chiều rộng của biểu đồ */
+    height: 400px; /* Đặt chiều cao của biểu đồ */
+    margin: auto;
+}
