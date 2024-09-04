@@ -121,5 +121,80 @@ namespace GYM93.Service
 
             return monthlyRevenues;
         }
+
+        public async Task<PaymentStatus> GetPaymentStatus()
+        {
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+
+            // Tính toán ngày đầu tiên của tháng hiện tại
+            var firstDayOfCurrentMonth = new DateTime(currentYear, currentMonth, 1);
+
+            // Đếm số lượng thành viên đã thanh toán trong tháng hiện tại
+            var paidCount = await _appDbContext.ThanhViens
+                .Where(tv => tv.NgayKetThuc.HasValue &&
+                             tv.NgayKetThuc.Value >= firstDayOfCurrentMonth)
+                .Select(tv => tv.ThanhVienId)
+                .Distinct()
+                .CountAsync();
+
+            // Đếm tổng số lượng thành viên
+            var totalCount = await _appDbContext.ThanhViens.CountAsync();
+
+            // Số lượng thành viên chưa thanh toán là tổng số trừ đi số thành viên đã thanh toán
+            var unpaidCount = totalCount - paidCount;
+
+            // Tạo đối tượng PaymentStatus để trả về
+            var result = new PaymentStatus
+            {
+                PaidCount = paidCount,
+                UnpaidCount = unpaidCount
+            };
+
+            return result;
+        }
+        public async Task<decimal> GetTotalEarning()
+        {
+            var currentYear = DateTime.Now.Year;
+
+            var firstDayOfCurrentYear = new DateTime(currentYear, 1, 1);
+
+            var today = DateTime.Now;
+
+            var totalEarning = await _appDbContext.HoaDons
+                                    .Where(n => n.NgayThanhToan >= firstDayOfCurrentYear && n.NgayThanhToan <= today)
+                                    .SumAsync(hd => hd.TongTien);
+
+            return totalEarning;
+        }
+
+        public async Task<decimal> GetTotalEarningCurrentMonth()
+        {
+            var currentMonth = DateTime.Now.Month;
+
+            var totalEarning = await _appDbContext.HoaDons
+                                    .Where(n => n.NgayThanhToan.Month == currentMonth)
+                                    .SumAsync(hd => hd.TongTien);
+
+            return totalEarning;
+        }
+
+        public async Task<int> GetTotalMembers()
+        {
+            var totalMembers = await _appDbContext.ThanhViens.CountAsync();
+
+            return totalMembers;
+        }
+
+        public async Task<int> GetNewMemberCurrentMonth()
+        {
+            var currentMonth = DateTime.Now.Month;
+
+            var totalNewMemerCurrentMotn = await _appDbContext.ThanhViens
+                                .Where(n => n.NgayThamGia.HasValue && n.NgayThamGia.Value.Month == currentMonth)
+                                .CountAsync();
+
+            return  totalNewMemerCurrentMotn;
+        }
     }
 }

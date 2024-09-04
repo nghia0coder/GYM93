@@ -15,10 +15,15 @@ namespace GYM93.Controllers
         {
             _logger = logger;
             _thongKeService = thongKeService;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewData["totalEarning"] = await _thongKeService.GetTotalEarning();
+            ViewData["totalEarningCurrentMonth"] = await _thongKeService.GetTotalEarningCurrentMonth();
+            ViewData["totalMembers"] = await _thongKeService.GetTotalMembers();
+            ViewData["totalNewMemberCurrentMonth"] = await _thongKeService.GetNewMemberCurrentMonth();
             return View();
         }
 
@@ -52,6 +57,15 @@ namespace GYM93.Controllers
             var monthlyRevenueGrowth = await _thongKeService.GetMonthlyRevenueGrowth();
             return Json(monthlyRevenueGrowth);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPaymentStatus()
+        {
+            var monthlyRevenueGrowth = await _thongKeService.GetPaymentStatus();
+            return Json(monthlyRevenueGrowth);
+        }
+
+
 
     }
 }
