@@ -65,16 +65,23 @@
             // Tạo nút gia hạn nếu còn dưới 10 ngày
             var renewButton = '';
             if (remainingDays <= 10) {
-                renewButton = `<a href="/hoadon/create/${member.thanhVienId}" class="btn btn-primary" style="margin-top:15px;">Gia Hạn</a>`;
+                renewButton = `<a href="/hoadon/create/${member.thanhVienId}" class="btn btn-primary" style="margin-top:15px;">Đăng Ký</a>`;
             }
 
-            var row = `<tr>
+            var progressText = '';
+            if (remainingDays > 0) {
+                progressText = `Còn ${remainingDays} ngày`;
+            } else {
+                progressText = `Vui Lòng Đăng Ký`;
+            }
+
+            var row = `<tr onclick="window.location.href='/thanhvien/details/${member.thanhVienId}';" style="cursor: pointer;">
                               <td>${member.ten}</td>
                               <td>${member.sđt}</td>
                               <td><img src="/${member.hinhAnhTv}" alt="Gym93" class="img-thumbnail" /></td>
                                 <td><div class="progress custom-progress position-relative">
                               <div class="progress-bar ${progressBarClass} custom-progress-bar" role="progressbar" style="width: ${progressPercent}%" aria-valuenow="${progressPercent}" aria-valuemin="0" aria-valuemax="100"></div>
-                              <div class="progress-text position-absolute w-100 text-center">Còn ${remainingDays} ngày</div>
+                              <div class="progress-text position-absolute w-100 text-center">${progressText}</div>
   
                           </div>
                             ${renewButton}
