@@ -71,8 +71,9 @@ namespace GYM93.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
+                {   
                     await _hoaDonService.HoaDonCreate(hoaDon);
+                    TempData["success"] = "Thanh Toán Hóa Đơn Thành Công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -82,6 +83,7 @@ namespace GYM93.Controllers
 
               
             }
+            TempData["error"] = "Tạo Hóa Đơn Thất Bại";
             ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten", hoaDon.ThanhVienId);
             return View(hoaDon);
         }
@@ -133,8 +135,10 @@ namespace GYM93.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Sửa Hóa Đơn Thành Công";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["success"] = "Sửa Hóa Đơn Thất Bại";
             ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "BienSoXe", hoaDon.ThanhVienId);
             return View(hoaDon);
         }

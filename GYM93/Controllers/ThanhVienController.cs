@@ -82,8 +82,10 @@ namespace GYM93.Controllers
             if (ModelState.IsValid)
             {
                 await _thanhVienSerivce.ThanhVienCreate(thanhVien);
+                TempData["success"] = "Tạo Thành Viên Mới Thành Công";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Tạo Thành Viên Mới Thất Bại";
             return View(thanhVien);
         }
 
@@ -118,8 +120,10 @@ namespace GYM93.Controllers
             if (ModelState.IsValid)
             {
                 await _thanhVienSerivce.ThanhVienUpdate(thanhVien);
+                TempData["success"] = "Sửa Thông Tin Thành Viên Thành Công";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["success"] = "Sửa Thông Tin Thành Viên Thất Bại";
             return View(thanhVien);
         }
 
@@ -217,6 +221,7 @@ namespace GYM93.Controllers
             {
                 await _thanhVienSerivce.ThanhVienDelete(id);
             }
+            TempData["success"] = "Xóa Thành Viên Thành Công";
             return RedirectToAction(nameof(Index));
         }
     }

@@ -139,3 +139,21 @@ table img {
     height: 400px; /* Đặt chiều cao của biểu đồ */
     margin: auto;
 }
+
+
+
+/* Tùy chỉnh thông báo Toastr */
+#toast-container > .toast {
+    background-color: #333; /* Màu nền đậm hơn */
+    color: #fff; /* Màu chữ trắng */
+    font-size: 14px; /* Tăng kích thước font chữ */
+    font-weight: bold; /* Chữ đậm */
+}
+
+#toast-container > .toast-success {
+    background-color: #28a745; /* Màu nền cho thông báo thành công */
+}
+
+#toast-container > .toast-error {
+    background-color: #dc3545; /* Màu nền cho thông báo lỗi */
+}

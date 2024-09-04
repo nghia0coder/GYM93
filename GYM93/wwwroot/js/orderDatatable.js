@@ -24,7 +24,7 @@ function loadDataTable() {
                 }
             }
         ],
-        "order": [[3, 'desc']],
+        "order": [[0, 'desc']],
         "language": {
             "emptyTable": "Hiện Tại Không Có Dữ Liệu Nào", // Thay đổi thông báo khi bảng không có dữ liệu
             "info": "Hiển thị từ _START_ đến _END_ của _TOTAL_ mục", // Thay đổi thông báo số lượng mục

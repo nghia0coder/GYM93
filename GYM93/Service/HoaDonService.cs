@@ -51,7 +51,7 @@ namespace GYM93.Service
                     h.ThangDangKy,
                     h.TongTien
                 })
-                .OrderByDescending(n => n.NgayThanhToan)
+                .OrderByDescending(n => n.HoaDonId)
                 .ToListAsync();
 
             return hoaDons;
