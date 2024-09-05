@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using GYM93.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GYM93.Data;
 
-public partial class AppDbContext : DbContext
+public partial class AppDbContext : IdentityDbContext<IdentityUser>
 {   
     private readonly IConfiguration _configuration;
   
@@ -54,7 +56,23 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Ten).HasMaxLength(50);
         });
 
-        OnModelCreatingPartial(modelBuilder);
+
+      
+
+
+
+        base.OnModelCreating(modelBuilder);
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            var table = entityType.GetTableName();
+
+            if (table != null &&  table.StartsWith("AspNet"))
+            {
+                entityType.SetTableName(table.Substring(6));
+            }
+        }
+
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
