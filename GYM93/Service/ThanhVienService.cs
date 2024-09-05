@@ -3,7 +3,6 @@ using GYM93.Models;
 using GYM93.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
 
 namespace GYM93.Service
 {
