@@ -1,0 +1,39 @@
+﻿@using GYM93.Models.ViewModels
+@model ProfileViewModel
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h4>Thông Tin Tài Khoản</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">User Name:</div>
+                        <div class="col-sm-8">@Model.UserName</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">Email:</div>
+                        <div class="col-sm-8">@Model.Email</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">Số Điện Thoại:</div>
+                        <div class="col-sm-8">@Model.PhoneNumber</div>
+                    </div>
+
+                   
+
+                    <!-- Thêm các field khác ở đây -->
+
+                    <div class="text-center">
+                        <a href="@Url.Action("EditProfile", "Account")" class="btn btn-outline-primary">Chỉnh Sửa Thông Tin</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

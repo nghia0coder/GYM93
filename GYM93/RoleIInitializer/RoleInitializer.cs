@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GYM93.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GYM93.RoleIInitializer
 {
@@ -7,7 +8,7 @@ namespace GYM93.RoleIInitializer
         public static async Task InitializeRoles(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
             string[] roleNames = { "Admin", "NhanVien" };
 
@@ -28,7 +29,7 @@ namespace GYM93.RoleIInitializer
 
             if (_user == null)
             {
-                var admin = new IdentityUser
+                var admin = new AppUser
                 {
                     UserName = "admin",
                     Email = "admin@gmail.com",
