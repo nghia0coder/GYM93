@@ -1,11 +1,10 @@
-﻿using GYM93.Service.IService;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace GYM93.Service
+namespace GYM93.RoleIInitializer
 {
-    public class UserService : IUserService
+    public static class RoleInitializer
     {
-        public async Task CreateRoles(IServiceProvider serviceProvider)
+        public static async Task InitializeRoles(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
@@ -14,15 +13,17 @@ namespace GYM93.Service
 
             IdentityResult roleResult;
 
+            // Tạo các vai trò nếu chưa tồn tại
             foreach (var roleName in roleNames)
             {
                 var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                if(!roleExist)
+                if (!roleExist)
                 {
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
+            // Tạo tài khoản Admin nếu chưa tồn tại
             var _user = await UserManager.FindByEmailAsync("admin@email.com");
 
             if (_user == null)
@@ -32,12 +33,20 @@ namespace GYM93.Service
                     UserName = "admin",
                     Email = "admin@gmail.com",
                 };
-                string adminPassword = "admin";
+                string adminPassword = configuration["AdminPassword"];
 
                 var createAdmin = await UserManager.CreateAsync(admin, adminPassword);
                 if (createAdmin.Succeeded)
                 {
                     await UserManager.AddToRoleAsync(admin, "Admin");
+                }
+                else
+                {
+                    Console.WriteLine("Error creating admin account:");
+                    foreach (var error in createAdmin.Errors)
+                    {
+                        Console.WriteLine($"- {error.Code}: {error.Description}");
+                    }
                 }
             }
         }
