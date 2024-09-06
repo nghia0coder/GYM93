@@ -1,6 +1,7 @@
 ﻿using GYM93.Models;
 using GYM93.Models.ViewModels;
 using GYM93.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -17,7 +18,7 @@ namespace GYM93.Controllers
             _thongKeService = thongKeService;
 
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             ViewData["totalEarning"] = await _thongKeService.GetTotalEarning();

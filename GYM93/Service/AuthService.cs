@@ -1,4 +1,5 @@
 ﻿using GYM93.Controllers;
+using GYM93.Models;
 using GYM93.Models.ViewModels;
 using GYM93.Service.IService;
 using Microsoft.AspNetCore.Identity;
@@ -8,13 +9,32 @@ namespace GYM93.Service
 {
 	public class AuthService : IAuthService
 	{	
-		private readonly UserManager<IdentityUser> _userManager;
-		private readonly SignInManager<IdentityUser> _signInManager;
+		private readonly UserManager<AppUser> _userManager;
+		private readonly SignInManager<AppUser> _signInManager;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
-		public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+		public AuthService(UserManager<AppUser> userManager, 
+							SignInManager<AppUser> signInManager,
+							IHttpContextAccessor httpContextAccessor)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_httpContextAccessor = httpContextAccessor;
+		}
+
+		public async Task<ProfileViewModel> GetProfile()
+		{
+			var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+
+			var model = new ProfileViewModel
+			{
+				UserName = user.UserName,
+				PhoneNumber = user.PhoneNumber,
+				Email = user.Email,
+				HinhAnh = user.HinhAnhTv
+			};
+
+			return model;
 		}
 
 		public async Task<bool> Login(LoginViewModel loginViewModel)
@@ -33,9 +53,10 @@ namespace GYM93.Service
 		}
 
 	
-		public async Task LogOut()
+		public async Task<bool> LogOut()
 		{
 			await _signInManager.SignOutAsync();
+			return true;
 		}
 	}
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GYM93.Data;
 
-public partial class AppDbContext : IdentityDbContext<IdentityUser>
+public partial class AppDbContext : IdentityDbContext<AppUser>
 {   
     private readonly IConfiguration _configuration;
   

@@ -6,6 +6,8 @@ namespace GYM93.Service.IService
     {
         Task<bool> Login(LoginViewModel loginViewModel);
 
-        Task LogOut();
+        Task<bool> LogOut();
+       
+        Task<ProfileViewModel> GetProfile();    
     }
 }

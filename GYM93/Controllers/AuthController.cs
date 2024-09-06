@@ -42,5 +42,21 @@ namespace GYM93.Controllers
             TempData["error"] = "Đăng Nhập Thất Bại. Kiểm Tra Lại Tên Khoản Và Mật Khẩu";
 			return View(model);
 		}
-    }
+		[HttpGet]
+		public async Task<IActionResult> Logout()
+		{
+		    var result = await _authService.LogOut();
+            if(result)
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            return View(result);
+		}
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            ProfileViewModel model = await _authService.GetProfile();
+            return View(model);
+        }
+
+        
+	}
 }

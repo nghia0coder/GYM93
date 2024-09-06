@@ -10,11 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddControllersWithViews();
 
 
 //Add Identity Service
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 //
@@ -43,6 +44,14 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
+});
+
+
+// Cấu hình đường dẫn mặc định cho trang đăng nhập
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.LoginPath = "/Auth/Login"; // Đường dẫn đến trang đăng nhập
+	options.AccessDeniedPath = "/Account/AccessDenied"; // Đường dẫn khi bị từ chối quyền truy cập
 });
 #endregion
 var app = builder.Build();
