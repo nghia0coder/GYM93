@@ -4,11 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e65e3981-0fc7-42cd-95d7-6c7684bbdfb5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="wwwroot\memberImages\" />
+    <Folder Include="wwwroot\login\" />
   </ItemGroup>
 
   <ItemGroup>
