@@ -41,7 +41,7 @@ public partial class ThanhVien
     public string? HinhAnhTv { get; set; }
     [Display(Name = "Hình Ảnh Thành Viên")]
     [NotMapped]
-    public IFormFile? Image {  get; set; }
+    public IFormFile Image {  get; set; }
 
     public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 }

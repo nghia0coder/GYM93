@@ -1,0 +1,71 @@
+﻿@using GYM93.Models.ViewModels
+@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "Tạo tài khoản nhân viên";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Tạo Tài Khoản Nhân Viên</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreatAccountEmpl" method="post" enctype="multipart/form-data">
+                        <div class="mb-5">
+                            <label asp-for="UserName" class="form-label">Tên Đăng Nhập</label>
+                            <input asp-for="UserName" value="@ViewBag.username" style="width : 30%"
+                                class="form-control" placeholder="Tên đăng nhập" readonly />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label">Họ và Tên</label>
+                            <input asp-for="FullName" class="form-control" placeholder="Họ và tên" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label">Số Điện Thoại</label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Số điện thoại" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input asp-for="Image" type="file" class="form-label" id="fileInput" style="display:none" onchange="previewImage(event)" />
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                Tải Hình Ảnh Lên
+                            </button>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-block">Tạo Tài Khoản</button>
+                        </div>
+                    </form>
+
+                    <!-- Image preview container -->
+                    <div id="imagePreview" class="image-preview-container">
+                        <img id="preview" src="#" alt="Image preview" style="display:none;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <link href="~/template/css/avatar.css" rel="stylesheet" />
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
