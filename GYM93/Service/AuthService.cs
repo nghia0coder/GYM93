@@ -91,9 +91,22 @@ namespace GYM93.Service
                 return false;
             }
 
+            if (!string.IsNullOrEmpty(user.HinhAnhTv))
+            {
+                var webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var oldFilePathDirectory = Path.Combine(webRootPath, user.HinhAnhTv.Replace("/", "\\"));
+
+                if (File.Exists(oldFilePathDirectory))
+                {
+                    File.Delete(oldFilePathDirectory);
+                }
+            }
+
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
+               
+            
                 return true;   
             }
             return false;

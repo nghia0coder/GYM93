@@ -17,9 +17,9 @@
                         <!-- Thêm một trường hidden để lưu trữ Id của nhân viên nếu cần thiết -->
                         <input type="hidden" asp-for="Id" />
 
-                        <div class="mb-3">
+                        <div class="mb-5">
                             <label asp-for="UserName" class="form-label">Tên Đăng Nhập</label>
-                            <input asp-for="UserName" class="form-control" readonly />
+                            <input asp-for="UserName" class="form-control" style="width : 30%" readonly />
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
 
@@ -41,13 +41,20 @@
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group">
+                     @*    <div class="form-group">
 
                             <input asp-for="Image" class="form-label" style="display:none" id="fileInput" onchange="previewImage(event)" />
                             <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-                                Thay Hình Ảnh Khác
+                             
                             </button>
                             <span asp-validation-for="Image" class="text-danger"></span>
+                        </div> *@
+
+                        <div class="form-group">
+                            <input asp-for="Image" type="file" class="form-label" id="fileInput" style="display:none" onchange="previewImage(event)" />
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                Thay Hình Ảnh Khác
+                            </button>
                         </div>
 
                         <div class="d-grid gap-2">
@@ -55,11 +62,10 @@
                             <a href="@Url.Action("EmployeeAccounts")" class="btn btn-secondary btn-block">Hủy</a>
                         </div>
                     </form>
-                    <div class="col-md-8">
-                        <!-- Placeholder for the image preview -->
-                        <div id="imagePreview" class="image-preview-container" style="margin-top: 10px;">
-                            <img id="preview" src="#" alt="Image preview" style="display:none; width: 100%; height:auto" />
-                        </div>
+                    <!-- Image preview container -->
+                    <div id="imagePreview" class="image-preview-container">
+                        <!-- Placeholder for the image -->
+                        <img src="/@Model.HinhAnhTv" id="preview" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
                     </div>
                 </div>
             </div>
@@ -68,6 +74,8 @@
 </div>
 
 @section Scripts {
+    <link href="~/template/css/avatar.css" rel="stylesheet" />
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

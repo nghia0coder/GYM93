@@ -17,36 +17,42 @@
                         <!-- Thêm một DeleteAccount hidden để lưu trữ Id của nhân viên -->
                         <input type="hidden" asp-for="UserName" />
 
-                        <div class="mb-3">
-                            <label class="form-label">Tên Đăng Nhập</label>
-                            <p class="form-control-static">@Model.UserName</p>
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Tên Đăng Nhập:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext">@Model.UserName</p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Họ và Tên:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext">@Model.FullName</p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Email:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext">@Model.Email</p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Số Điện Thoại:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext">@Model.PhoneNumber</p>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Họ và Tên</label>
-                            <p class="form-control-static">@Model.FullName</p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <p class="form-control-static">@Model.Email</p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Số Điện Thoại</label>
-                            <p class="form-control-static">@Model.PhoneNumber</p>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Hình Ảnh</label>
-                            <p class="form-control-static">@Model.HinhAnhTv</p>
-                        </div>
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-danger btn-block">Xóa Tài Khoản</button>
                             <a href="@Url.Action("Index")" class="btn btn-secondary btn-block">Hủy</a>
                         </div>
                     </form>
+                    <!-- Image preview container -->
+                    <div id="imagePreview" class="image-preview-container">
+                        <!-- Placeholder for the image -->
+                        <img src="/@Model.HinhAnhTv" id="preview" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,7 +60,10 @@
 </div>
 
 @section Scripts {
+    <link href="~/template/css/avatar.css" rel="stylesheet" />
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
