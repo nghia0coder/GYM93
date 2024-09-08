@@ -1,4 +1,5 @@
-﻿<!-- Sidebar -->
+﻿@using GYM93.Utilities
+<!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -92,13 +93,18 @@
         </div>
     </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span>
-        </a>
-    </li>
+    @if(User.IsInRole(SD.Admin))
+    {
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="/auth/EmployeeAccounts">
+                <i class="fa-regular fa-id-card"></i>
+
+                <span>Quản Lý Tài Khoản</span>
+            </a>
+        </li>
+    }
+   
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">

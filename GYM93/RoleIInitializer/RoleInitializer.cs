@@ -1,4 +1,5 @@
 ﻿using GYM93.Models;
+using GYM93.Utilities;
 using Microsoft.AspNetCore.Identity;
 
 namespace GYM93.RoleIInitializer
@@ -10,7 +11,7 @@ namespace GYM93.RoleIInitializer
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
-            string[] roleNames = { "Admin", "NhanVien" };
+            string[] roleNames = { SD.Admin, SD.NhanVien };
 
             IdentityResult roleResult;
 
@@ -34,12 +35,12 @@ namespace GYM93.RoleIInitializer
                     UserName = "admin",
                     Email = "admin@gmail.com",
                 };
-                string adminPassword = configuration["AdminPassword"];
+                string adminPassword = configuration[SD.AdminPassword];
 
                 var createAdmin = await UserManager.CreateAsync(admin, adminPassword);
                 if (createAdmin.Succeeded)
                 {
-                    await UserManager.AddToRoleAsync(admin, "Admin");
+                    await UserManager.AddToRoleAsync(admin, SD.Admin);
                 }
                 else
                 {
