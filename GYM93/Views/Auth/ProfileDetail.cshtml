@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <!-- Image preview container -->
-                    <div class="col-md-4">
+                    <div id="imagePreview" class="image-preview-container">
                         <!-- Placeholder for the image -->
                         <img src="/@Model.HinhAnh" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
                     </div>
@@ -54,3 +54,10 @@
 </div>
 
 
+@section Scripts {
+    <link href="~/template/css/avatar.css" rel="stylesheet" />
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
