@@ -7,6 +7,7 @@ using GYM93.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Data;
 
 namespace GYM93.Service
@@ -44,7 +45,7 @@ namespace GYM93.Service
 			};
 
 
-			var result = await _userManager.CreateAsync(user, _configuration[SD.AdminPassword]);
+			var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
@@ -119,10 +120,11 @@ namespace GYM93.Service
             {
                 return false;
             }
-
+           
             user.FullName = appUser.FullName;
             user.Email = appUser.Email;
             user.PhoneNumber = appUser.PhoneNumber;
+            
             if (appUser.Image != null)
             {
                 if (!string.IsNullOrEmpty(appUser.HinhAnhTv))
@@ -144,11 +146,35 @@ namespace GYM93.Service
                 }
                 user.HinhAnhTv = "memberImages/" + fileName;
             }
+
+            if (appUser.Password != null)
+            {
+                // Xóa mật khẩu cũ nếu người dùng đã có mật khẩu
+                var hasPassword = await _userManager.HasPasswordAsync(user);
+                if (hasPassword)
+                {
+                    var removeResult = await _userManager.RemovePasswordAsync(user);
+                    if (!removeResult.Succeeded)
+                    {
+                        return false;
+                    }
+                }
+
+                // Thêm mật khẩu mới
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, appUser.Password);
+                if (!addPasswordResult.Succeeded)
+                {
+                    return false;
+                }
+            }
           
 
+
+
             var result = await _userManager.UpdateAsync(user);
+           
             if (result.Succeeded)
-            {
+            {   
                 return true;
             }
 			return false;

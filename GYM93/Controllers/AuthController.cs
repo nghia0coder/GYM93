@@ -99,7 +99,7 @@ namespace GYM93.Controllers
                 var isSuccess = await _authService.CreateAccountEployee(profileViewModel);
                 if (isSuccess)
                 {
-                    TempData["success"] = "Tạo Tài Khoản Nhân Viên Thành Công. Mật Khẩu Mặt định là 123456";
+                    TempData["success"] = "Tạo Tài Khoản Nhân Viên Thành Công";
                     return RedirectToAction("EmployeeAccounts");
                 }    
                    

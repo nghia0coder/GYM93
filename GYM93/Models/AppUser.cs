@@ -15,5 +15,10 @@ namespace GYM93.Models
         [Display(Name = "Hình Ảnh Thành Viên")]
         [NotMapped]
         public IFormFile Image { get; set; }
+        [NotMapped]
+        [StringLength(100, ErrorMessage = "Mật khẩu phải có ít nhất {2} ký tự.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Mật Khẩu")]
+        public string Password { get; set; }
     }
 }
