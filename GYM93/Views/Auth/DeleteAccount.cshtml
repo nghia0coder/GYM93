@@ -13,57 +13,69 @@
                     <h3>Xác Nhận Xóa Tài Khoản Nhân Viên</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="DeleteAccount" method="post">
-                        <!-- Thêm một DeleteAccount hidden để lưu trữ Id của nhân viên -->
+                    <form asp-action="DeleteAccount" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="UserName" />
 
-                        <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Tên Đăng Nhập:</label>
-                            <div class="col-sm-8">
-                                <p class="form-control-plaintext">@Model.UserName</p>
-                            </div>
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label">Tên Đăng Nhập</label>
+                            <input asp-for="UserName" class="form-control custom-width" readonly />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Họ và Tên:</label>
-                            <div class="col-sm-8">
-                                <p class="form-control-plaintext">@Model.FullName</p>
-                            </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label">Họ Và Tên</label>
+                            <input asp-for="FullName" class="form-control custom-width" placeholder="Số điện thoại" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
                         </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Email:</label>
-                            <div class="col-sm-8">
-                                <p class="form-control-plaintext">@Model.Email</p>
-                            </div>
+
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" style="width : 40%" placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Số Điện Thoại:</label>
-                            <div class="col-sm-8">
-                                <p class="form-control-plaintext">@Model.PhoneNumber</p>
+
+                        <div class="mb-3 d-flex align-items-center">
+                            <div class="flex-grow-0">
+                                <label asp-for="PhoneNumber" class="form-label">Số Điện Thoại</label>
+                                <input asp-for="PhoneNumber" class="form-control custom-width" style="width: 270px;" placeholder="Họ và tên" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
+
+                         
+                        </div>
+
+
+                        <!-- Image preview and change image button -->
+                        <div class="mb-4 text-center">
+                            <!-- Image preview container -->
+                            <div id="imagePreview" class="image-preview-container mb-3">
+                                <img src="/@Model.HinhAnhTv" id="preview" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid rounded-circle" />
+                            </div>
+
+
                         </div>
 
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-danger btn-block">Xóa Tài Khoản</button>
-                            <a href="@Url.Action("Index")" class="btn btn-secondary btn-block">Hủy</a>
+                            <button type="submit" class="btn btn-danger btn-block">Xóa</button>
+                            <a href="@Url.Action("EmployeeAccounts")" class="btn btn-secondary btn-block">Hủy</a>
                         </div>
                     </form>
-                    <!-- Image preview container -->
-                    <div id="imagePreview" class="image-preview-container">
-                        <!-- Placeholder for the image -->
-                        <img src="/@Model.HinhAnhTv" id="preview" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+
 @section Scripts {
-    <link href="~/template/css/avatar.css" rel="stylesheet" />
+    <link href="~/template/css/avatar.css" rel="stylesheet" asp-append-version="true" />
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
 

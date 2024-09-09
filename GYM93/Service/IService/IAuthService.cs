@@ -11,7 +11,7 @@ namespace GYM93.Service.IService
 
         Task<List<AppUser>> GetAllAccountNhanVien();
        
-        Task<ProfileViewModel> GetProfile();
+        Task<AppUser> GetProfile();
 
         Task<ProfileViewModel> GetProfileDetail(string userId);
 

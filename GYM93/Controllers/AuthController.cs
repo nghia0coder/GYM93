@@ -56,7 +56,7 @@ namespace GYM93.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            ProfileViewModel model = await _authService.GetProfile();
+            AppUser model = await _authService.GetProfile();
             return View(model);
         }
         [HttpGet]
