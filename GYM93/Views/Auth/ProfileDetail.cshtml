@@ -38,12 +38,12 @@
                         </div>
                     </div>
                     <!-- Image preview container -->
-                    <div id="imagePreview" class="image-preview-container">
+                    <div id="imagePreview" class="image-preview-container" style="margin-right:60px; margin-top: 20px;">
                         <!-- Placeholder for the image -->
                         <img src="/@Model.HinhAnh" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
                     </div>
 
-                    <div class="d-flex justify-content-between mt-4">
+                    <div class=" justify-content-between mt-4">
                         <a href="@Url.Action("EditProfile", new { id = Model.UserName })" class="btn btn-warning">Chỉnh Sửa</a>
                         <a href="@Url.Action("EmployeeAccounts")" class="btn btn-secondary">Quay Lại</a>
                     </div>
@@ -55,7 +55,7 @@
 
 
 @section Scripts {
-    <link href="~/template/css/avatar.css" rel="stylesheet" />
+    <link href="~/template/css/avatar.css" rel="stylesheet" asp-append-version="true" />
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

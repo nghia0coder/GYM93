@@ -1,5 +1,5 @@
 ﻿@using GYM93.Models.ViewModels
-@model ProfileViewModel
+@model AppUser
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -24,12 +24,16 @@
                         <div class="col-sm-8">@Model.PhoneNumber</div>
                     </div>
 
-                   
+                    <!-- Image preview container -->
+                    <div id="imagePreview" class="image-preview-container">
+                        <!-- Placeholder for the image -->
+                        <img src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
+                    </div>
 
                     <!-- Thêm các field khác ở đây -->
 
                     <div class="text-center">
-                        <a href="@Url.Action("EditProfile", "Account")" class="btn btn-outline-primary">Chỉnh Sửa Thông Tin</a>
+                        <a href="@Url.Action("EditProfile", "Auth", new {userId = Model.Id})" class="btn btn-outline-primary">Chỉnh Sửa Thông Tin</a>
                     </div>
                 </div>
             </div>
@@ -37,3 +41,10 @@
     </div>
 </div>
 
+@section Scripts {
+    <link href="~/template/css/avatar.css" rel="stylesheet" />
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

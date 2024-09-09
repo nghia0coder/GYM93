@@ -206,19 +206,13 @@ namespace GYM93.Service
 			return usersInRole.ToList();
         }
 
-        public async Task<ProfileViewModel> GetProfile()
+        public async Task<AppUser> GetProfile()
 		{
 			var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
-			var model = new ProfileViewModel
-			{
-				UserName = user.UserName,
-				PhoneNumber = user.PhoneNumber,
-				Email = user.Email,
-				HinhAnh = user.HinhAnhTv
-			};
+			
 
-			return model;
+			return user;
 		}
 
         public async Task<ProfileViewModel> GetProfileDetail(string userId)

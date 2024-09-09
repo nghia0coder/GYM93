@@ -13,6 +13,9 @@ table.dataTable thead > tr > th.dt-orderable-asc {
     height: 30px; /* Chiều cao tùy chỉnh */
     border-radius: 15px; /* Bo tròn 2 đầu của container */
 }
+.custom-width {
+    width : 40%;
+}
 
 .custom-progress-bar {
     font-size: 15px;
