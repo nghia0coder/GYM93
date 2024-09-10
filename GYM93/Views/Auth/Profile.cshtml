@@ -40,10 +40,12 @@
                     </div>
 
                     <!-- Thêm các field khác ở đây -->
-
-                    <div class="text-center">
-                        <a href="@Url.Action("EditProfile", "Auth", new {userId = Model.Id})" class="btn btn-outline-primary">Chỉnh Sửa Thông Tin</a>
+                    
+                    <div >
+                        <a href="@Url.Action("PersonalProfile", "Auth", new {userId = Model.Id})" class="btn btn-primary">Chỉnh Sửa Thông Tin</a> |
+                        <a href="@Url.Action("ChangePassword", "Auth")" class="btn btn-primary">Đổi Mật Khẩu</a>
                     </div>
+              
                 </div>
             </div>
         </div>

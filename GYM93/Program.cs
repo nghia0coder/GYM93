@@ -4,7 +4,10 @@ using GYM93.RoleIInitializer;
 using GYM93.Service;
 using GYM93.Service.IService;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,14 @@ builder.Services.AddScoped<IThanhVienService, ThanhVienService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<IThongKeService, ThongKeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUrlHelper>(x =>
+{
+    var actionContext = x.GetRequiredService<IHttpContextAccessor>().HttpContext;
+    var urlHelperFactory = x.GetRequiredService<IUrlHelperFactory>();
+    return urlHelperFactory.GetUrlHelper(new ActionContext(actionContext, new RouteData(), new ActionDescriptor()));
+});
 #region IdentityOptions
 builder.Services.Configure<IdentityOptions>(options =>
 {

@@ -2,6 +2,7 @@
 using GYM93.Models.ViewModels;
 using GYM93.Service.IService;
 using GYM93.Utilities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol;
 
@@ -114,6 +115,31 @@ namespace GYM93.Controllers
             var account = await _authService.GetUserById(userId);
             return View(account);
         }
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            var isSuccess = await _authService.ChangPassword(model);
+            if(isSuccess)
+            {
+                TempData["success"] = "Đổi Mật Khẩu Thành Công";
+                return RedirectToAction(nameof(Profile));
+            }
+            return View(model);
+        }
+
+
+            [HttpGet]
+        public async Task<IActionResult> PersonalProfile(string userId)
+        {
+            var account = await _authService.GetUserById(userId);
+            return View(account);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfile(AppUser model)
@@ -151,6 +177,55 @@ namespace GYM93.Controllers
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            var isSuccess = await _authService.ForgotPassword(model);
+            if(!isSuccess)
+            {
+                TempData["error"] = "Email Không Hợp Lệ";
+                return RedirectToAction(nameof(Login));
+            }
+            TempData["success"] = "Hãy Kiểm Tra Email Của Bạn";
+            return RedirectToAction(nameof(Login));
+
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var model = new ResetPasswordViewModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var isSucces = await _authService.ResetPassword(model);
+            if (!isSucces)
+            {
+                TempData["success"] = "Đặt Lại Mật Khẩu Thất Bại";
+                return View(model);
+            }
+            TempData["success"] = "Đặt Lại Mật Khẩu Thành Công";
+            return RedirectToAction(nameof(Login));
         }
     }
 }
