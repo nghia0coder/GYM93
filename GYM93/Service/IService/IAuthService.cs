@@ -24,8 +24,13 @@ namespace GYM93.Service.IService
 
         Task<string> GenerateUserName();
 
-
+        Task<bool> ChangPassword(ChangePasswordViewModel  model);
 
         Task<bool> CreateAccountEployee(ProfileViewModel model);
+
+        Task<bool> ForgotPassword(ForgotPasswordViewModel model);
+
+        Task<bool> ResetPassword(ResetPasswordViewModel model);
+
     }
 }

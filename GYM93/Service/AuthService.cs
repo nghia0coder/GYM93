@@ -1,13 +1,18 @@
-﻿using GYM93.Controllers;
+﻿using Azure.Core;
+using GYM93.Controllers;
 using GYM93.Data;
 using GYM93.Models;
 using GYM93.Models.ViewModels;
 using GYM93.Service.IService;
 using GYM93.Utilities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Data;
+using System.Security.Policy;
+using IEmailSender = GYM93.Service.IService.IEmailSender;
 
 namespace GYM93.Service
 {
@@ -17,20 +22,46 @@ namespace GYM93.Service
 		private readonly SignInManager<AppUser> _signInManager;
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
 		private readonly IConfiguration _configuration;
-
+        private readonly IUrlHelper _urlHelper;
 		public AuthService(UserManager<AppUser> userManager, 
 							SignInManager<AppUser> signInManager,
 							IHttpContextAccessor httpContextAccessor,
 							RoleManager<IdentityRole> roleManager,
-							IConfiguration configuration)
+							IConfiguration configuration,
+                            IEmailSender emailSender,
+                            IUrlHelper urlHelper)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_httpContextAccessor = httpContextAccessor;
 			_roleManager = roleManager;
 			_configuration = configuration;
+            _emailSender = emailSender;
+            _urlHelper = urlHelper;
 		}
+
+        public async Task<bool> ChangPassword(ChangePasswordViewModel model)
+        {
+            
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            if (user == null)
+            {
+                return false;
+            }
+
+            // Thay đổi mật khẩu
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                // Đăng nhập lại sau khi đổi mật khẩu thành công
+                await _signInManager.RefreshSignInAsync(user);
+                return true;
+            }
+            return false;
+        }
 
         public async Task<bool> CreateAccountEployee(ProfileViewModel model)
         {
@@ -44,7 +75,7 @@ namespace GYM93.Service
 			};
 
 
-			var result = await _userManager.CreateAsync(user, _configuration[SD.AdminPassword]);
+			var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
@@ -119,10 +150,11 @@ namespace GYM93.Service
             {
                 return false;
             }
-
+           
             user.FullName = appUser.FullName;
             user.Email = appUser.Email;
             user.PhoneNumber = appUser.PhoneNumber;
+            
             if (appUser.Image != null)
             {
                 if (!string.IsNullOrEmpty(appUser.HinhAnhTv))
@@ -144,14 +176,79 @@ namespace GYM93.Service
                 }
                 user.HinhAnhTv = "memberImages/" + fileName;
             }
+
+            if (appUser.Password != null)
+            {
+                // Xóa mật khẩu cũ nếu người dùng đã có mật khẩu
+                var hasPassword = await _userManager.HasPasswordAsync(user);
+                if (hasPassword)
+                {
+                    var removeResult = await _userManager.RemovePasswordAsync(user);
+                    if (!removeResult.Succeeded)
+                    {
+                        return false;
+                    }
+                }
+
+                // Thêm mật khẩu mới
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, appUser.Password);
+                if (!addPasswordResult.Succeeded)
+                {
+                    return false;
+                }
+            }
           
 
+
+
             var result = await _userManager.UpdateAsync(user);
+           
             if (result.Succeeded)
-            {
+            {   
                 return true;
             }
 			return false;
+        }
+
+        public async Task<bool> ForgotPassword(ForgotPasswordViewModel model)
+        {
+           
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if(user == null)
+            {
+                return false;
+            }    
+            bool isInRole = await _userManager.IsInRoleAsync(user, SD.Admin);
+            if (!isInRole)
+            {
+                // Không tiết lộ thông tin người dùng không tồn tại
+                return false;
+            }
+
+            // Tạo mã token reset mật khẩu
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = _urlHelper.Action("ResetPassword", "Auth", new { token, email = model.Email }, "https");
+
+            string emailBody = $@"
+                <div style='font-family: Arial, sans-serif; font-size: 16px; color: #333;'>
+                    <h2 style='color: #2c3e50;'>Đặt Lại Mật Khẩu</h2>
+                    <p>Xin chào,</p>
+                    <p>Bạn đã yêu cầu đặt lại mật khẩu. Vui lòng nhấp vào liên kết bên dưới để đặt lại mật khẩu của bạn:</p>
+                    <p style='text-align: center;'>
+                        <a href='{resetLink}' style='padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 18px;'>Đặt Lại Mật Khẩu</a>
+                    </p>
+                    <p>Nếu bạn không yêu cầu đặt lại mật khẩu, bạn có thể bỏ qua email này.</p>
+                    <p>Trân trọng,</p>
+                
+                </div>";
+
+
+            // Gửi email
+            await _emailSender.SendEmail(model.Email, "Đặt lại mật khẩu",
+                 emailBody);
+
+            return true;
         }
 
         public async Task<string> GenerateUserName()
@@ -264,5 +361,22 @@ namespace GYM93.Service
 			await _signInManager.SignOutAsync();
 			return true;
 		}
-	}
+
+        public async Task<bool> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
 }

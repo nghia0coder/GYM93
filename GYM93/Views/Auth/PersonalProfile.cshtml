@@ -1,8 +1,8 @@
 ﻿@using GYM93.Models.ViewModels
-@model ProfileViewModel
+@model AppUser
 
 @{
-    ViewData["Title"] = "Tạo tài khoản nhân viên";
+    ViewData["Title"] = "Chỉnh Sửa Tài Khoản Nhân Viên";
 }
 
 <div class="container mt-5">
@@ -10,21 +10,21 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-primary text-white text-center">
-                    <h3>Tạo Tài Khoản Nhân Viên</h3>
+                    <h3>Chỉnh Sửa Thông Tin Tài Khoản</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="CreatAccountEmpl" method="post" enctype="multipart/form-data">
-                     
+                    <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" />
 
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label">Tên Đăng Nhập</label>
-                            <input asp-for="UserName" value="@ViewBag.username" class="form-control custom-width" readonly />
+                            <input asp-for="UserName" class="form-control custom-width" readonly />
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
                             <label asp-for="FullName" class="form-label">Họ Và Tên</label>
-                            <input asp-for="FullName" class="form-control custom-width" placeholder="Họ Và Tên" />
+                            <input asp-for="FullName" class="form-control custom-width" placeholder="Số điện thoại" />
                             <span asp-validation-for="FullName" class="text-danger"></span>
                         </div>
 
@@ -36,11 +36,10 @@
                         </div>
 
 
-
                         <div class="mb-3 d-flex align-items-center">
                             <div class="flex-grow-0">
                                 <label asp-for="PhoneNumber" class="form-label">Số Điện Thoại</label>
-                                <input asp-for="PhoneNumber" class="form-control custom-width" style="width: 270px;" placeholder="PhoneNumber" />
+                                <input asp-for="PhoneNumber" class="form-control custom-width" style="width: 270px;" placeholder="Họ và tên" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
 
@@ -57,28 +56,17 @@
                         <div class="mb-4 text-center">
                             <!-- Image preview container -->
                             <div id="imagePreview" class="image-preview-container mb-3">
-                                <img  id="preview"  class="img-fluid rounded-circle" />
+                                <img src="/@Model.HinhAnhTv" id="preview" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid rounded-circle" />
                             </div>
 
 
                         </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Mật Khẩu</label>
-                            <input asp-for="Password" class="form-control" style="width : 40%" placeholder="Mật Khẩu" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="ConfirmPassword" class="form-label">Nhập Lại Mật Khẩu</label>
-                            <input asp-for="ConfirmPassword" class="form-control" style="width : 40%" placeholder="Nhập Lại Mật Khẩu" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        </div>
+               
 
 
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-block">Tạo</button>
+                            <button type="submit" class="btn btn-primary btn-block">Lưu Thay Đổi</button>
                             <a href="@Url.Action("EmployeeAccounts")" class="btn btn-secondary btn-block">Hủy</a>
                         </div>
                     </form>
