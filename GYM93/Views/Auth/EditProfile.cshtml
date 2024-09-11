@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="Id" />
-
+                        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label">Tên Đăng Nhập</label>
                             <input asp-for="UserName" class="form-control custom-width" readonly />

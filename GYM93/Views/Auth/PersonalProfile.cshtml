@@ -1,8 +1,12 @@
 ﻿@using GYM93.Models.ViewModels
+@using GYM93.Utilities
 @model AppUser
 
 @{
     ViewData["Title"] = "Chỉnh Sửa Tài Khoản Nhân Viên";
+}
+@{
+    var isEmployee = User.IsInRole(SD.NhanVien);
 }
 
 <div class="container mt-5">
@@ -15,7 +19,7 @@
                 <div class="card-body">
                     <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="Id" />
-
+                        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label">Tên Đăng Nhập</label>
                             <input asp-for="UserName" class="form-control custom-width" readonly />
@@ -24,14 +28,14 @@
 
                         <div class="mb-3">
                             <label asp-for="FullName" class="form-label">Họ Và Tên</label>
-                            <input asp-for="FullName" class="form-control custom-width" placeholder="Số điện thoại" />
+                            <input asp-for="FullName" class="form-control custom-width" placeholder="Số điện thoại" disabled="@(isEmployee == true)" />
                             <span asp-validation-for="FullName" class="text-danger"></span>
                         </div>
 
 
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" style="width : 40%" placeholder="Email" />
+                            <input asp-for="Email" class="form-control" style="width : 40%" placeholder="Email" disabled="@(isEmployee == true)" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
@@ -39,7 +43,7 @@
                         <div class="mb-3 d-flex align-items-center">
                             <div class="flex-grow-0">
                                 <label asp-for="PhoneNumber" class="form-label">Số Điện Thoại</label>
-                                <input asp-for="PhoneNumber" class="form-control custom-width" style="width: 270px;" placeholder="Họ và tên" />
+                                <input asp-for="PhoneNumber" class="form-control custom-width" style="width: 270px;" placeholder="Số Điện Thoại" disabled="@(isEmployee == true)"/>
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
 
@@ -67,7 +71,15 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-block">Lưu Thay Đổi</button>
-                            <a href="@Url.Action("EmployeeAccounts")" class="btn btn-secondary btn-block">Hủy</a>
+                            @if(ViewBag.ReturnUrl != null)
+                            {
+                                <a href="@ViewBag.ReturnUrl" class="btn btn-secondary btn-block">Hủy</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("EmployeeAccounts")" class="btn btn-secondary btn-block">Hủy</a>
+                            }
+     
                         </div>
                     </form>
                 </div>
