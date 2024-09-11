@@ -10,7 +10,7 @@ function loadDataTable() {
         "columns": [
             { data: "hoaDonId", "width": "10%", "className": "text-center" },
             { data: "tenThanhVien", "width": "15%", "className": "text-center" },
-            { data: "thangDangKy", "width": "15%", "className": "text-center" },
+            { data: "soNgayDangKy", "width": "15%", "className": "text-center" },
             {
                 data: "ngayThanhToan", "width": "20%", "className": "text-center",
                 render: function (data, type, row) {
@@ -22,7 +22,8 @@ function loadDataTable() {
                 render: function (data) {
                     return new Intl.NumberFormat('vi-VN').format(data) + ' VNĐ';
                 }
-            }
+            },
+            { data: "tenNguoiThanhToan", "width": "15%", "className": "text-center" }
         ],
         "order": [[0, 'desc']],
         "language": {

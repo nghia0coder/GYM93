@@ -36,8 +36,8 @@
                               <td><img src="/${member.hinhAnhTv}" alt="Gym93" class="img-thumbnail" /></td>
                               <td>
                                   <a href="/ThanhVien/Edit/${member.thanhVienId}" class="btn btn-warning"  >Chỉnh Sửa Thông Tin</a> |
-                                  <a href="/ThanhVien/Details/${member.thanhVienId}" class="btn btn-info">Thông Tin Tiết</a> |
-                                  <a href="/ThanhVien/Delete/${member.thanhVienId}" class="btn btn-danger">Xóa Thành Viên</a>
+                                  <a href="/ThanhVien/Details/${member.thanhVienId}" class="btn btn-info">Thông Tin Tiết</a> 
+                             ${false ? `<a href="/ThanhVien/Delete/${member.thanhVienId}" class="btn btn-danger">Xóa Thành Viên</a>` : ''}
                               </td>
                            </tr>`;
             tableBody.innerHTML += row;

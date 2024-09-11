@@ -4,6 +4,7 @@ using GYM93.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GYM93.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911034430_alterHoaDon")]
+    partial class alterHoaDon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,9 +110,6 @@ namespace GYM93.Migrations
                     b.Property<int>("SoNgayDangKy")
                         .HasColumnType("int");
 
-                    b.Property<string>("TaiKhoanId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("ThanhVienId")
                         .IsRequired()
                         .HasColumnType("int");
@@ -118,8 +118,6 @@ namespace GYM93.Migrations
                         .HasColumnType("decimal(18, 0)");
 
                     b.HasKey("HoaDonId");
-
-                    b.HasIndex("TaiKhoanId");
 
                     b.HasIndex("ThanhVienId");
 
@@ -315,19 +313,12 @@ namespace GYM93.Migrations
 
             modelBuilder.Entity("GYM93.Models.HoaDon", b =>
                 {
-                    b.HasOne("GYM93.Models.AppUser", "TaiKhoan")
-                        .WithMany("HoaDons")
-                        .HasForeignKey("TaiKhoanId")
-                        .HasConstraintName("FK_TaiKhoan_ThanhVien");
-
                     b.HasOne("GYM93.Models.ThanhVien", "ThanhVien")
                         .WithMany("HoaDons")
                         .HasForeignKey("ThanhVienId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_HoaDon_ThanhVien");
-
-                    b.Navigation("TaiKhoan");
 
                     b.Navigation("ThanhVien");
                 });
@@ -381,11 +372,6 @@ namespace GYM93.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("GYM93.Models.AppUser", b =>
-                {
-                    b.Navigation("HoaDons");
                 });
 
             modelBuilder.Entity("GYM93.Models.ThanhVien", b =>
