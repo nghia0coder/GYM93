@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using GYM93.Data;
 using GYM93.Models;
 using GYM93.Service.IService;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace GYM93.Controllers
 {
@@ -71,7 +73,9 @@ namespace GYM93.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {   
+                {
+                    // Lưu tên người thanh toán vào hóa đơn
+
                     await _hoaDonService.HoaDonCreate(hoaDon);
                     TempData["success"] = "Thanh Toán Hóa Đơn Thành Công";
                     return RedirectToAction(nameof(Index));
@@ -180,6 +184,42 @@ namespace GYM93.Controllers
         private bool HoaDonExists(int id)
         {
             return _context.HoaDons.Any(e => e.HoaDonId == id);
+        }
+
+        [HttpGet]
+        [Route("hoadon/CreateVisitor/{thanhVienId?}")]
+        public IActionResult CreateVisitor(int? thanhVienId)
+        {
+            ViewData["ThanhVienId"] = thanhVienId;
+            return View();
+        }
+
+        // POST: HoaDon/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateVisitor([Bind("HoaDonId,ThanhVienId,SoNgayDangKy,TongTien")] HoaDon hoaDon)
+        {
+            ModelState.Remove("ThangDangKy");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _hoaDonService.VisitorCreate(hoaDon);
+                    TempData["success"] = "Thanh Toán Hóa Đơn Thành Công";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+
+            }
+            TempData["error"] = "Tạo Hóa Đơn Thất Bại";
+            ViewData["ThanhVienId"] = new SelectList(_context.ThanhViens, "ThanhVienId", "Ten", hoaDon.ThanhVienId);
+            return View(hoaDon);
         }
     }
 }

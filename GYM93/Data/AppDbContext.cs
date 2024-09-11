@@ -38,6 +38,8 @@ public partial class AppDbContext : IdentityDbContext<AppUser>
             entity.HasOne(d => d.ThanhVien).WithMany(p => p.HoaDons)
                 .HasForeignKey(d => d.ThanhVienId)
                 .HasConstraintName("FK_HoaDon_ThanhVien");
+
+         
         });
 
         modelBuilder.Entity<ThanhVien>(entity =>

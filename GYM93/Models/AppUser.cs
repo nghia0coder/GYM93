@@ -20,5 +20,6 @@ namespace GYM93.Models
         [DataType(DataType.Password)]
         [Display(Name = "Mật Khẩu")]
         public string Password { get; set; }
+
     }
 }

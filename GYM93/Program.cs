@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using GYM93.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +82,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+SD.Initialize(app.Services.GetRequiredService<IHttpContextAccessor>());
 
 app.UseAuthentication();
 app.UseAuthorization();
