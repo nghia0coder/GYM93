@@ -8,22 +8,22 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: "/hoadon/getallhoadon" },
         "columns": [
-            { data: "hoaDonId", "width": "10%", "className": "text-center" },
+            { data: "hoaDonId", "width": "15%", "className": "text-center" },
             { data: "tenThanhVien", "width": "15%", "className": "text-center" },
-            { data: "soNgayDangKy", "width": "15%", "className": "text-center" },
+            { data: "soNgayDangKy", "width": "20%", "className": "text-center" },
             {
-                data: "ngayThanhToan", "width": "20%", "className": "text-center",
+                data: "ngayThanhToan", "width": "15%", "className": "text-center",
                 render: function (data, type, row) {
                     return moment(data).format('DD/MM/YYYY HH:mm'); // sử dụng moment.js để định dạng ngày tháng
                 }
             },
             {
-                data: "tongTien", "width": "20%", "className": "text-center",
+                data: "tongTien", "width": "15%", "className": "text-center",
                 render: function (data) {
                     return new Intl.NumberFormat('vi-VN').format(data) + ' VNĐ';
                 }
             },
-            { data: "tenNguoiThanhToan", "width": "15%", "className": "text-center" }
+            { data: "tenNguoiThanhToan", "width": "25%", "className": "text-center" }
         ],
         "order": [[0, 'desc']],
         "language": {

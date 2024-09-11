@@ -88,6 +88,7 @@ namespace GYM93.Controllers
         [HttpGet]
         public async Task<IActionResult> ProfileDetail(string userId)
         {
+            ViewBag.ReturnUrl = Request.Headers["Referer"].ToString();
             return View(await _authService.GetProfileDetail(userId));
         }
 
@@ -113,7 +114,28 @@ namespace GYM93.Controllers
         public async Task<IActionResult> EditProfile(string userId)
         {
             var account = await _authService.GetUserById(userId);
+            ViewBag.ReturnUrl = Request.Headers["Referer"].ToString();
             return View(account);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(AppUser model, string returnUrl)
+        {
+            try
+            {
+                var isSuccess = await _authService.EditProfile(model);
+                if (isSuccess)
+                {
+                    TempData["success"] = "Chỉnh Thông Tin Tài Khoản Nhân Viên Thành Công";
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    return RedirectToAction("EmployeeAccounts");
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            return View(model);
         }
         [HttpGet]
         public IActionResult ChangePassword()
@@ -134,28 +156,14 @@ namespace GYM93.Controllers
         }
 
 
-            [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> PersonalProfile(string userId)
         {
             var account = await _authService.GetUserById(userId);
+            ViewBag.ReturnUrl = Request.Headers["Referer"].ToString();
             return View(account);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProfile(AppUser model)
-        {
-            try
-            {
-                var isSuccess = await _authService.EditProfile(model);
-                if (isSuccess)
-                {
-                    TempData["success"] = "Chỉnh Thông Tin Tài Khoản Nhân Viên Thành Công";
-                    return RedirectToAction("EmployeeAccounts");
-                }   
-            }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-            return View(model);
-        }
+     
         [HttpGet]
         public async Task<IActionResult> DeleteAccount(string userId)
         {
