@@ -28,7 +28,8 @@ public partial class HoaDon
     public int ThangDangKy { get; set; }
 
     [DisplayName("Số Ngày Đăng Ký")]
-    public int SoNgayDangKy { get; set; }
+	[Required(ErrorMessage = "Vui Lòng Nhập Số Ngày Đăng Ký")]
+	public int SoNgayDangKy { get; set; }
 
     [DisplayName("Thành Viên Thanh Toán")]
 

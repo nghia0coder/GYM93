@@ -101,7 +101,10 @@ namespace GYM93.Service
 
             thanhVien.SoTienDaDong += hoaDon.TongTien;
             _appDbContext.ThanhViens.Update(thanhVien);
-            _appDbContext.Add(hoaDon);
+			var userId = SD.GetCurrentUserId();
+			var user = await _userManager.FindByIdAsync(userId);
+			hoaDon.TenNguoiThanhToan = user.FullName;
+			_appDbContext.Add(hoaDon);
             await _appDbContext.SaveChangesAsync();
             return  true;   
         }
