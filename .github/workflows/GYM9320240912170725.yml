@@ -1,17 +1,17 @@
-name: Build and deploy .NET Core application to Web App Gym93
+name: Build and deploy .NET Core application to Web App GYM9320240912170725
 on:
   push:
     branches:
     - master
 env:
-  AZURE_WEBAPP_NAME: Gym93
-  AZURE_WEBAPP_PACKAGE_PATH: GYM93/published
+  AZURE_WEBAPP_NAME: GYM9320240912170725
+  AZURE_WEBAPP_PACKAGE_PATH: GYM93\published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: GYM93
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET SDK
@@ -32,7 +32,7 @@ jobs:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     steps:
     - name: Download artifact from build job
@@ -44,5 +44,5 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.GYM93_9DA2 }}
+        publish-profile: ${{ secrets.GYM9320240912170725_E403 }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
