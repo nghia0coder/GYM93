@@ -49,7 +49,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 0;
 
     // Lockout settings.
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(5);
+
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 
@@ -57,6 +58,28 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
+
+
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(5); // Thời gian hết hạn cookie, ở đây là 5 tiếng
+    options.SlidingExpiration = true; // Cho phép gia hạn thời gian khi có hoạt động từ người dùng
+    options.Cookie.IsEssential = true; // Cookie được coi là thiết yếu cho hoạt động của ứng dụng
+
+    // Để logout ngay lập tức khi hết hạn
+    options.Events.OnValidatePrincipal = context =>
+    {
+        var now = DateTimeOffset.UtcNow;
+        if (context.Properties.ExpiresUtc.HasValue && context.Properties.ExpiresUtc.Value < now)
+        {
+            context.RejectPrincipal(); // Đánh dấu người dùng là không hợp lệ
+            context.ShouldRenew = true; // Gia hạn lại cookie
+        }
+        return Task.CompletedTask;
+    };
 });
 
 
