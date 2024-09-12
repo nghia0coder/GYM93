@@ -6,13 +6,12 @@
                 url: '/ThanhVien/SearchThanhVien',
                 data: { term: request.term },
                 success: function (data) {
-                 
-                    response($.map(data.value, function (item) {
-                        
+                    // Giới hạn kết quả trả về chỉ 9 item
+                    response($.map(data.value.slice(0, 9), function (item) {
                         return {
                             label: item.ten,
                             value: item.thanhVienId,
-                            img : item.hinhAnhTv
+                            img: item.hinhAnhTv
                         };
                     }));
                 },
@@ -111,3 +110,15 @@
 
    
 });
+
+// Thêm CSS để giới hạn chiều cao của menu gợi ý
+$("<style>")
+    .prop("type", "text/css")
+    .html(`
+        .ui-autocomplete {
+            max-height: 300px; /* Điều chỉnh chiều cao tùy theo kích thước mong muốn */
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    `)
+    .appendTo("head");
