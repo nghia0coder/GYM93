@@ -1,0 +1,38 @@
+﻿@model IEnumerable<AppUser>
+@{
+    ViewData["Title"] = "Danh sách tài khoản";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+<div c lass="container">
+    <a class="btn btn-success  mt-3 mb-3" asp-action="CreatAccountEmpl">Tạo Tài Khoản Nhân Viên Mới</a>
+    <table class="table table-bordered table-striped">
+       
+        <thead>
+            <tr>
+                <th>Tên Tài Khoản</th>
+                <th>Họ Và Tên</th>
+                <th>Thao Tác</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var profile in Model)
+            {
+                <tr>
+                    <td>@profile.UserName</td>
+                    <td>@profile.FullName</td>
+                    <td>
+                        <a class="btn btn-secondary" asp-action="ProfileDetail" asp-route-userId="@profile.Id">Chi Tiết</a> |
+                        <a class="btn btn-warning" asp-action="EditProfile" asp-route-userId="@profile.Id">Chỉnh Sửa</a> |
+                        <a class="btn btn-danger" asp-action="DeleteAccount" asp-route-userId="@profile.Id">Xóa</a>
+                      
+                    </td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

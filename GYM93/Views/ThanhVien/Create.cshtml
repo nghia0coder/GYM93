@@ -4,17 +4,17 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>ThanhVien</h4>
+<h4>Tạo Thành Viên Mới</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          
             <div class="form-group">
                 <label asp-for="HoVaTenDem" class="control-label"></label>
-                <input asp-for="HoVaTenDem" class="form-control" />
+                <input asp-for="HoVaTenDem" class="form-control"  />
                 <span asp-validation-for="HoVaTenDem" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,40 +24,51 @@
             </div>
             <div class="form-group">
                 <label asp-for="Sđt" class="control-label"></label>
-                <input asp-for="Sđt" class="form-control" />
+                <input type="number" asp-for="Sđt" class="form-control" />
                 <span asp-validation-for="Sđt" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="GioiTinh" /> @Html.DisplayNameFor(model => model.GioiTinh)
-                </label>
+            <div class="form-group">
+                <label for="gioiTinh">@Html.DisplayNameFor(model => model.GioiTinh)</label>
+                <select asp-for="GioiTinh" class="form-control" id="gioiTinh">
+                    <option value="true">Nam</option>
+                    <option value="false">Nữ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BienSoXe" class="control-label"></label>
+                <input asp-for="BienSoXe" class="form-control" />
+                <span asp-validation-for="BienSoXe" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cmnd" class="control-label"></label>
-                <input asp-for="Cmnd" class="form-control" />
-                <span asp-validation-for="Cmnd" class="text-danger"></span>
+                <input asp-for="Image" type="file" class="form-label" id="fileInput" style="display:none" onchange="previewImage(event)" />
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Tải Hình Ảnh Lên
+                </button>
+
             </div>
             <div class="form-group">
-                <label asp-for="NgayThamGia" class="control-label"></label>
-                <input asp-for="NgayThamGia" class="form-control" />
-                <span asp-validation-for="NgayThamGia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HinhAnhTv" class="control-label"></label>
-                <input asp-for="HinhAnhTv" class="form-control" />
-                <span asp-validation-for="HinhAnhTv" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Tạo Mới" class="btn btn-success" />
             </div>
         </form>
+    </div>
+    <div class="col-md-8">
+        <!-- Placeholder for the image preview -->
+        <div id="imagePreview" class="image-preview-container" style="margin-top: 10px;">
+            <img id="preview" src="#" alt="Image preview"  style="display:none; width: 100%; height:auto" />
+        </div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Trở Về Danh Sách</a>
 </div>
 
 @section Scripts {
+   
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+   
+   <script>
+       
+   </script>
 }

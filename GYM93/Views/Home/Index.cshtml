@@ -1,8 +1,302 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h1 mb-0 text-gray-800">Thống Kê</h1>
+    @* <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+    </a> *@
 </div>
+<!-- Content Row -->
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Doanh Thu (Cả Năm)
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalEarning" data-amount="@ViewData["totalEarning"]"></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Doanh Thu (Tháng Hiện Tại)
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalEarningCurrentMonth" data-amount="@ViewData["totalEarningCurrentMonth"]"></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Tổng Số Lượng Thành Viên Hiện Tại
+                        </div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.totalMembers</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                      
+                        <i class="fa-solid fa-people-roof fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Số Lượng Thành Viên Mới Tháng Này
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.totalNewMemberCurrentMonth</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-user-plus fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Row -->
+<div>
+    <!-- Hàng 1 -->
+    <div class="chart-row">
+        <div class="chart-container">
+            <canvas id="chart1"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="chart2"></canvas>
+        </div>
+    </div>
+
+    <!-- Hàng 2 -->
+    <div class="chart-row">
+        <div class="small-chart">
+            <canvas id="chart3"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="chart4"></canvas>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        fetch('/Home/GetRevenueChart')
+            .then(response => response.json())
+            .then(data => {
+                chart1.data.labels = data.labels;
+                chart1.data.datasets[0].data = data.data;
+                chart1.update();
+            });
+
+        fetch('/Home/GetMonthlyRegistrations')
+            .then(response => response.json())
+            .then(data => {
+                var currentMonth = new Date().getMonth() + 1; // Tháng hiện tại (1-12)
+                var months = Array.from({ length: currentMonth }, (_, i) => `Tháng ${i + 1}`);
+
+                // Gán labels và data cho biểu đồ
+                chart2.data.labels = months;
+                chart2.data.datasets[0].data = data.map(d => d.count);
+                chart2.update();
+            });
+        fetch('/Home/GetMonthlyRevenueGrowth')
+            .then(response => response.json())
+            .then(data => {
+                const currentMonth = new Date().getMonth() + 1; // Tháng hiện tại (1-12)
+                const months = Array.from({ length: currentMonth }, (_, i) => `Tháng ${i + 1}`);
+
+
+              
+              
+                // Tạo dữ liệu cho biểu đồ
+                const revenueChanges = months.map(month => {
+                    const monthNumber = parseInt(month.slice(-1)); // Lấy số tháng từ label
+                    const monthData = data.find(d => d.month === monthNumber);
+                    return monthData ? monthData.revenueChange : 0;
+                });
+
+                // Cập nhật biểu đồ
+                chart4.data.labels = months;
+                chart4.data.datasets[0].data = revenueChanges;
+
+             
+                chart4.update();
+            });
+
+        // Gọi API để lấy dữ liệu
+        fetch('/Home/GetPaymentStatus')
+            .then(response => response.json())
+            .then(data => {
+                // Cập nhật dữ liệu cho biểu đồ
+                chart3.data.datasets[0].data = [data.paidCount, data.unpaidCount];
+                chart3.update();
+            })
+            .catch(error => console.error('Error:', error));
+
+        // Data cho biểu đồ 1 - Tổng doanh thu theo tháng
+        var ctx1 = document.getElementById('chart1').getContext('2d');
+        var chart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+                datasets: [{
+                    label: 'Tổng Doanh Thu',
+                    data: [12000, 15000, 10000, 20000, 17000],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Data cho biểu đồ 2 - Số lượng hóa đơn theo tháng
+        var ctx2 = document.getElementById('chart2').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+                datasets: [{
+                    label: 'Số Lượng Thành Viên Mới',
+                    data: [10, 12, 8, 15, 13],
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Data cho biểu đồ 3 - Doanh thu theo từng thành viên
+        var ctx3 = document.getElementById('chart3').getContext('2d');
+        var chart3 = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: ['Đã đóng tiền', 'Chưa đóng tiền'],
+                datasets: [{
+                    label: 'Số Người ',
+                    data: [0, 0], // Sẽ cập nhật sau
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)', // Màu cho nhóm đã đóng tiền
+                        'rgba(255, 99, 132, 0.2)'  // Màu cho nhóm chưa đóng tiền
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)', // Màu viền cho nhóm đã đóng tiền
+                        'rgba(255, 99, 132, 1)'  // Màu viền cho nhóm chưa đóng tiền
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Data cho biểu đồ 4 - Tăng trưởng doanh thu theo tháng
+        var ctx4 = document.getElementById('chart4').getContext('2d');
+        var chart4 = new Chart(ctx4, {
+            type: 'line',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+                datasets: [{
+                    label: 'Tăng Trưởng Doanh Thu',
+                    data: [5, 10, -3, 15, -2],
+                    fill: false,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        function formatAmount(element) {
+            if (element) {
+                // Lấy giá trị số tiền từ thuộc tính data-amount
+                var amount = element.getAttribute('data-amount');
+
+                // Kiểm tra xem giá trị có hợp lệ không
+                if (amount) {
+                    // Chuyển đổi giá trị thành số
+                    var amountNumber = parseFloat(amount);
+
+                    // Định dạng số tiền với dấu phân cách hàng nghìn
+                    var formattedAmount = amountNumber.toLocaleString('vi-VN');
+
+                    // Gán giá trị đã định dạng vào HTML
+                    element.innerText = formattedAmount + ' VNĐ';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lấy các phần tử theo id
+            var totalEarningElement = document.getElementById('totalEarning');
+            var totalEarningCurrentMonthElement = document.getElementById('totalEarningCurrentMonth');
+
+            // Gọi hàm formatAmount cho từng phần tử
+            formatAmount(totalEarningElement);
+            formatAmount(totalEarningCurrentMonthElement);
+        });
+    </script>
+}

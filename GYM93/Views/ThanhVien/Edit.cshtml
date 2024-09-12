@@ -4,15 +4,17 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh Sửa Thông Tin Thành Viên</h1>
 
-<h4>ThanhVien</h4>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ThanhVienId" />
+            <input asp-for="NgayThamGia" type="hidden" />
             <div class="form-group">
                 <label asp-for="HoVaTenDem" class="control-label"></label>
                 <input asp-for="HoVaTenDem" class="form-control" />
@@ -28,35 +30,49 @@
                 <input asp-for="Sđt" class="form-control" />
                 <span asp-validation-for="Sđt" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="GioiTinh" /> @Html.DisplayNameFor(model => model.GioiTinh)
-                </label>
+            <div class="form-group">
+                <label for="gioiTinh">@Html.DisplayNameFor(model => model.GioiTinh)</label>
+                <select asp-for="GioiTinh" class="form-control" id="gioiTinh">
+                    <option value="true">Nam</option>
+                    <option value="false">Nữ</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Cmnd" class="control-label"></label>
-                <input asp-for="Cmnd" class="form-control" />
-                <span asp-validation-for="Cmnd" class="text-danger"></span>
+                <label asp-for="BienSoXe" class="control-label"></label>
+                <input asp-for="BienSoXe" class="form-control" />
+                <span asp-validation-for="BienSoXe" class="text-danger"></span>
+            </div>
+            <div>
+               
+            </div>
+ 
+      
+            <div class="form-group">
+                
+                <input asp-for="Image" class="form-label" style="display:none" id="fileInput" onchange="previewImage(event)" />
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Thay Hình Ảnh Khác
+                </button>
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NgayThamGia" class="control-label"></label>
-                <input asp-for="NgayThamGia" class="form-control" />
-                <span asp-validation-for="NgayThamGia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HinhAnhTv" class="control-label"></label>
-                <input asp-for="HinhAnhTv" class="form-control" />
-                <span asp-validation-for="HinhAnhTv" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-success" />
             </div>
         </form>
+   
+    </div>
+  
+    <div class="col-md-8">
+        <!-- Placeholder for the image preview -->
+        <div id="imagePreview" class="image-preview-container" style="margin-top: 10px;">
+            <img id="preview" src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93"  />
+            <img id="preview" src="" alt="Image preview" style="display:none; width: 100%; height:auto" />
+        </div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Trở Về Danh Sách</a>
 </div>
 
 @section Scripts {

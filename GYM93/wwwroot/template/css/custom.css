@@ -1,0 +1,162 @@
+﻿.img-thumbnail {
+    width: 150px;
+    height: 150px;
+    object-fit: cover; 
+}
+table.dataTable thead > tr > th.dt-orderable-asc {
+    padding-right: 15px !important;
+}
+
+.custom-progress {
+    background-color: lightgrey;
+    margin-top: 60px;
+    height: 30px; /* Chiều cao tùy chỉnh */
+    border-radius: 15px; /* Bo tròn 2 đầu của container */
+}
+.custom-width {
+    width : 40%;
+}
+
+.custom-progress-bar {
+    font-size: 15px;
+    border-radius: 15px; /* Bo tròn 2 đầu của thanh progress */
+}
+.progress-text {
+    position: absolute;
+    top: 15px; /* Thay thế cho margin-top */
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    color: black;
+    pointer-events: none;
+}
+
+
+.image-preview-container {
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .image-preview-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* Hoặc sử dụng cover nếu bạn muốn hình ảnh che phủ toàn bộ khung mà không để lại khoảng trống */
+    }
+
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+    .search-container input {
+        max-width: 300px;
+        border-radius: 20px;
+        padding: 10px;
+    }
+
+table img {
+    max-width: 100px;
+    border-radius: 50%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+    .pagination button {
+        border-radius: 50px;
+        margin: 0 10px;
+        padding: 10px 20px;
+    }
+
+    .pagination span {
+        font-size: 1.2rem;
+        margin: 0 10px;
+    }
+
+
+
+.container {
+    margin-top: 30px;
+}
+
+.table {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .table thead th {
+        background-color: #343a40;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .table td {
+        text-align: center;
+    }
+
+.btn-custom {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+}
+
+    .btn-custom:hover {
+        background-color: #0056b3;
+    }
+
+.highlight {
+    background-color: #d4edda;
+    color: #155724;
+}
+.chart-row {
+    display: flex; /* Sử dụng flexbox để sắp xếp các biểu đồ trong cùng một hàng */
+    justify-content: space-between; /* Đảm bảo khoảng cách giữa các biểu đồ */
+    margin-bottom: 50px; /* Khoảng cách giữa các hàng */
+}
+.chart-container {
+    width: 45%;
+    margin-top: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.small-chart {
+    width: 400px; /* Đặt chiều rộng của biểu đồ */
+    height: 400px; /* Đặt chiều cao của biểu đồ */
+    margin: auto;
+}
+
+
+
+/* Tùy chỉnh thông báo Toastr */
+#toast-container > .toast {
+    background-color: #333; /* Màu nền đậm hơn */
+    color: #fff; /* Màu chữ trắng */
+    font-size: 14px; /* Tăng kích thước font chữ */
+    font-weight: bold; /* Chữ đậm */
+}
+
+#toast-container > .toast-success {
+    background-color: #28a745; /* Màu nền cho thông báo thành công */
+}
+
+#toast-container > .toast-error {
+    background-color: #dc3545; /* Màu nền cho thông báo lỗi */
+}

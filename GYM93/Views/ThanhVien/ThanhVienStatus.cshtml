@@ -1,0 +1,49 @@
+﻿@model IEnumerable<GYM93.Models.ThanhVien>
+
+@{
+    ViewData["Title"] = "Thành Viên Trong CLB";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center">Trạng Thái Thành Viên</h1>
+
+    <div class="search-container d-flex justify-content-center">
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm thành viên..." oninput="fetchData()" />
+    </div>
+
+  
+    <div class="table-responsive">
+        <table id="tblData" class="table  table-hover text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        <a href="#" class="text-white" onclick="fetchData('Ten')">
+                            Tên <i id="sortIcon" class="fa"></i>
+                        </a>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Sđt)
+                    </th>
+                    <th>Hình Ảnh</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dữ liệu thành viên sẽ được hiển thị ở đây -->
+            </tbody>
+        </table>
+    </div>
+   
+
+    <div id="pagination" class="pagination">
+        <button id="prevPageBtn" class="btn btn-primary" onclick="prevPage()">Trang Trước</button>
+        <span id="pageInfo">Trang 1</span>
+        <button id="nextPageBtn" class="btn btn-primary" onclick="nextPage()">Trang Sau</button>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/js/thanhVienStatus.js" asp-append-version="true"></script>
+}
