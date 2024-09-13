@@ -107,7 +107,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-SD.Initialize(app.Services.GetRequiredService<IHttpContextAccessor>());
+SD.Initialize(app.Services.GetRequiredService<IHttpContextAccessor>(), app.Services.GetService<IConfiguration>());
 
 app.UseAuthentication();
 app.UseAuthorization();

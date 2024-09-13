@@ -1,6 +1,8 @@
-﻿using GYM93.Data;
+﻿using Azure.Storage.Blobs;
+using GYM93.Data;
 using GYM93.Models;
 using GYM93.Service.IService;
+using GYM93.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +11,12 @@ namespace GYM93.Service
     public class ThanhVienService : IThanhVienService
     {
         private readonly AppDbContext _appDbContext;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public ThanhVienService(AppDbContext appDbContext)
+        public ThanhVienService(AppDbContext appDbContext, BlobServiceClient blobServiceClient)
         {
             _appDbContext = appDbContext;
+            _blobServiceClient = blobServiceClient;
         }
 
         public async Task<ThanhVien> GetThanhVienById(int? thanhVienId)
@@ -33,16 +37,21 @@ namespace GYM93.Service
             if (thanhVien.Image != null)
             {
                 string fileName = thanhVien.ThanhVienId + Path.GetExtension(thanhVien.Image.FileName);
-                string filePath = @"wwwroot/memberImages/" + fileName;
-                var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
 
-                using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                // Get a reference to the container
+                var containerClient = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+
+                // Get a reference to the blob
+                var blobClient = containerClient.GetBlobClient(fileName);
+
+                // Upload the image to Azure Blob Storage
+                using (var stream = thanhVien.Image.OpenReadStream())
                 {
-                    thanhVien.Image.CopyTo(fileStream);
+                    await blobClient.UploadAsync(stream, true);
                 }
 
-
-                thanhVien.HinhAnhTv = "memberImages/" + fileName;
+                // Set the HinhAnhTv to the blob URL
+                thanhVien.HinhAnhTv = blobClient.Uri.ToString();
             }
             else
             {

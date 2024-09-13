@@ -5,15 +5,21 @@ namespace GYM93.Utilities
     public static class SD
     {
         private static IHttpContextAccessor _httpContextAccessor;
-
-        public static void Initialize(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
+        private static IConfiguration _configuration;
         public const string Admin = "Admin";
         public const string NhanVien = "NhanVien";
         public const string AdminPassword = "AdminPassword";
         public const int maxEmployeeAccounts = 5;
+        public static string ContainerName {  get; set; }
+
+        public static void Initialize(IHttpContextAccessor httpContextAccessor,
+                                       IConfiguration configuration)
+        {   
+            _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
+            ContainerName = _configuration.GetSection("AzureBlobStorage:ContainerName").Value;
+        }
+      
 
         public static string GetCurrentUserId()
         {
