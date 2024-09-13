@@ -82,42 +82,54 @@ namespace GYM93.Service
             return await _appDbContext.ThanhViens.ToListAsync() ?? throw new ArgumentException("Thanh Vien Not Found");
         }
 
-        public async Task ThanhVienUpdate(ThanhVien thanhVien)
+        public async Task ThanhVienUpdate(int id,ThanhVien thanhVien)
         {
             try
             {
-         
-          
+                ThanhVien member = _appDbContext.ThanhViens.FirstOrDefault(n => n.ThanhVienId == thanhVien.ThanhVienId);
+
+                // Kiểm tra nếu member không tồn tại
+                if (member == null)
+                {
+                    throw new ArgumentException("Thanh Vien Not Found");
+                }
+
                 if (thanhVien.Image != null)
                 {
-                    if (!string.IsNullOrEmpty(thanhVien.HinhAnhTv))
+                    // Kiểm tra và xóa ảnh cũ nếu có
+                    if (!string.IsNullOrEmpty(member.HinhAnhTv))
                     {
-                        var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), thanhVien.HinhAnhTv);
+                        var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", member.HinhAnhTv);
                         FileInfo file = new FileInfo(oldFilePathDirectory);
                         if (file.Exists)
                         {
-                            file.Delete();
+                            try
+                            {
+                                file.Delete();
+                            }
+                            catch (Exception ex)
+                            {
+                                // Xử lý lỗi nếu không thể xóa file
+                                throw new IOException("Không thể xóa ảnh cũ.", ex);
+                            }
                         }
-
                     }
-                    string fileName = thanhVien.ThanhVienId + Path.GetExtension(thanhVien.Image.FileName);
-                    string filePath = @"wwwroot\memberImages\" + fileName;
+
+                    // Lưu ảnh mới
+                    string fileName = member.ThanhVienId + Path.GetExtension(thanhVien.Image.FileName);
+                    string filePath = Path.Combine("wwwroot", "memberImages", fileName);
                     var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+
                     using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
                     {
-                        thanhVien.Image.CopyTo(fileStream);
+                        await thanhVien.Image.CopyToAsync(fileStream);
                     }
-                    thanhVien.HinhAnhTv = "memberImages/" + fileName;
-                }
-                else
-                {
-                    thanhVien.HinhAnhTv = _appDbContext.ThanhViens.AsNoTracking()
-                                    .Where(tv => tv.ThanhVienId == thanhVien.ThanhVienId)
-                                    .Select(tv => tv.HinhAnhTv)
-                                    .FirstOrDefault();
-                }    
 
-                _appDbContext.ThanhViens.Update(thanhVien);
+                    member.HinhAnhTv = "memberImages/" + fileName; // Cập nhật đường dẫn ảnh mới
+                }
+
+                // Nếu không thay đổi ảnh, giữ nguyên ảnh cũ
+                _appDbContext.Entry(member).State = EntityState.Modified;
                 await _appDbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -131,6 +143,7 @@ namespace GYM93.Service
                     throw;
                 }
             }
+
         }
 
 

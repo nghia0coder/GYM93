@@ -119,7 +119,7 @@ namespace GYM93.Controllers
 
             if (ModelState.IsValid)
             {
-                await _thanhVienSerivce.ThanhVienUpdate(thanhVien);
+                await _thanhVienSerivce.ThanhVienUpdate(id,thanhVien);
                 TempData["success"] = "Sửa Thông Tin Thành Viên Thành Công";
                 return RedirectToAction(nameof(Index));
             }

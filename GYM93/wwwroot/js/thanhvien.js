@@ -29,10 +29,12 @@
         tableBody.innerHTML = '';
         totalPages = data.totalPages;
         data.members.forEach(function (member) {
+            var hoVaTenDem = member.hoVaTenDem ? member.hoVaTenDem : 'trống';
+            var sdt = member.sđt ? member.sđt : 'trống';
             var row = `<tr>
-                              <td>${member.hoVaTenDem}</td>
+                              <td>${hoVaTenDem}</td>
                               <td>${member.ten}</td>
-                              <td>${member.sđt}</td>
+                              <td>${sdt}</td>
                               <td><img src="/${member.hinhAnhTv}" alt="Gym93" class="img-thumbnail" /></td>
                               <td>
                                   <a href="/ThanhVien/Edit/${member.thanhVienId}" class="btn btn-warning"  >Chỉnh Sửa Thông Tin</a> |
