@@ -42,9 +42,7 @@
                 <input asp-for="BienSoXe" class="form-control" />
                 <span asp-validation-for="BienSoXe" class="text-danger"></span>
             </div>
-            <div>
-               
-            </div>
+           
  
       
             <div class="form-group">
@@ -56,17 +54,16 @@
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="submit" value="Lưu" class="btn btn-success btn-lg" />
             </div>
         </form>
    
     </div>
-  
+
     <div class="col-md-8">
-        <!-- Placeholder for the image preview -->
+        <!-- Hiển thị preview, nếu không có ảnh thì mặc định ẩn -->
         <div id="imagePreview" class="image-preview-container" style="margin-top: 10px;">
-            <img id="preview" src="/@Model.HinhAnhTv" alt="Hình Ảnh Thành Viên Gym93"  />
-            <img id="preview" src="" alt="Image preview" style="display:none; width: 100%; height:auto" />
+            <img id="preview" src="/@Model.HinhAnhTv" alt="Image preview" style="display:@(string.IsNullOrEmpty(Model.HinhAnhTv) ? "none" : "block")" />
         </div>
     </div>
 </div>
