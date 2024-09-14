@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Azure.Storage.Blobs;
 using GYM93.Controllers;
 using GYM93.Data;
 using GYM93.Models;
@@ -25,13 +26,15 @@ namespace GYM93.Service
         private readonly IEmailSender _emailSender;
 		private readonly IConfiguration _configuration;
         private readonly IUrlHelper _urlHelper;
+        private readonly BlobServiceClient _blobServiceClient;  
 		public AuthService(UserManager<AppUser> userManager, 
 							SignInManager<AppUser> signInManager,
 							IHttpContextAccessor httpContextAccessor,
 							RoleManager<IdentityRole> roleManager,
 							IConfiguration configuration,
                             IEmailSender emailSender,
-                            IUrlHelper urlHelper)
+                            IUrlHelper urlHelper,
+                            BlobServiceClient blobServiceClient)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
@@ -40,6 +43,7 @@ namespace GYM93.Service
 			_configuration = configuration;
             _emailSender = emailSender;
             _urlHelper = urlHelper;
+            _blobServiceClient = blobServiceClient;
 		}
 
         public async Task<bool> ChangPassword(ChangePasswordViewModel model)
@@ -84,16 +88,10 @@ namespace GYM93.Service
                 if (model.Image != null)
                 {
                     string fileName = user.Id + Path.GetExtension(model.Image.FileName);
-                    string filePath = @"wwwroot/memberImages/" + fileName;
-                    var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
-
-                    using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
-                    {
-                        model.Image.CopyTo(fileStream);
-                    }
-
-
-                    user.HinhAnhTv = "memberImages/" + fileName;
+                    var containerClient = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+                    var blobClient = containerClient.GetBlobClient(fileName);
+                    await blobClient.UploadAsync(model.Image.OpenReadStream(), true);
+                    user.HinhAnhTv = blobClient.Uri.ToString();
                 }
                 else
                 {
@@ -159,22 +157,21 @@ namespace GYM93.Service
             {
                 if (!string.IsNullOrEmpty(appUser.HinhAnhTv))
                 {
-                    var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), appUser.HinhAnhTv);
-                    FileInfo file = new FileInfo(oldFilePathDirectory);
-                    if (file.Exists)
-                    {
-                        file.Delete();
-                    }
-
+                    var containerClient1 = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+                    var oldBlobName = Path.GetFileName(new Uri(appUser.HinhAnhTv).LocalPath);
+                    var oldBlobClient = containerClient1.GetBlobClient(oldBlobName);
+                    await oldBlobClient.DeleteIfExistsAsync();
                 }
+                // Upload new image to Blob Storage
                 string fileName = appUser.Id + Path.GetExtension(appUser.Image.FileName);
-                string filePath = @"wwwroot\memberImages\" + fileName;
-                var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
-                using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                var containerClient = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+                var blobClient = containerClient.GetBlobClient(fileName);
+
+                using (var stream = appUser.Image.OpenReadStream())
                 {
-                    appUser.Image.CopyTo(fileStream);
+                    await blobClient.UploadAsync(stream, true);
                 }
-                user.HinhAnhTv = "memberImages/" + fileName;
+                user.HinhAnhTv = blobClient.Uri.ToString();
             }
 
             if (appUser.Password != null)

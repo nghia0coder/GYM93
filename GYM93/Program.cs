@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using GYM93.Utilities;
+using Azure.Storage.Blobs;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllersWithViews();
-
+//Azure Blob Storage
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetSection("AzureBlobStorage:BlobStorageConnectionStrings").Value));
 
 //Add Identity Service
 builder.Services.AddIdentity<AppUser, IdentityRole>()
@@ -24,7 +27,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 //
-
 builder.Services.AddScoped<IThanhVienService, ThanhVienService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<IThongKeService, ThongKeService>();
@@ -105,7 +107,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-SD.Initialize(app.Services.GetRequiredService<IHttpContextAccessor>());
+SD.Initialize(app.Services.GetRequiredService<IHttpContextAccessor>(), app.Services.GetService<IConfiguration>());
 
 app.UseAuthentication();
 app.UseAuthorization();
