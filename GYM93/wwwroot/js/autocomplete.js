@@ -30,7 +30,7 @@
       
             // Tạo thẻ img chứa hình ảnh
             var imgTag = `
-            <img src="/${ui.item.img}" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
+            <img src="${ui.item.img}" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
         `;
 
             // Chèn hình ảnh vào bên trong div với id displayImage
@@ -47,7 +47,7 @@
     }).autocomplete("instance")._renderItem = function (ul, item) {
         // Tạo giao diện tùy chỉnh cho mỗi item với hình ảnh
         return $("<li>")
-            .append("<div><img src='/" + item.img + "' alt='Image' style='width:100px; height:100px;  object-fit: cover; margin-right:10px;' />" + item.label + "</div>")
+            .append("<div><img src='" + item.img + "' alt='Image' style='width:100px; height:100px;  object-fit: cover; margin-right:10px;' />" + item.label + "</div>")
             .appendTo(ul);
     };;
 
@@ -61,7 +61,7 @@
             success: function (data) {
                 if (data) {
                     var imgTag = `
-            <img src="/${data.hinhAnhTv}" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
+            <img src="${data.hinhAnhTv}" alt="Hình Ảnh Thành Viên Gym93" class="img-fluid" />
         `;
                     // Gán tên thành viên vào input search
                     $("#searchThanhVien").val(data.ten); // Hiển thị tên thành viên

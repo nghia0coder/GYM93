@@ -78,7 +78,7 @@
             var row = `<tr onclick="window.location.href='/thanhvien/details/${member.thanhVienId}';" style="cursor: pointer;">
                               <td>${member.ten}</td>
                               <td>${member.sđt}</td>
-                              <td><img src="/${member.hinhAnhTv}" alt="Gym93" class="img-thumbnail" /></td>
+                              <td><img src="${member.hinhAnhTv}" alt="Gym93" class="img-thumbnail" /></td>
                                 <td><div class="progress custom-progress position-relative">
                               <div class="progress-bar ${progressBarClass} custom-progress-bar" role="progressbar" style="width: ${progressPercent}%" aria-valuenow="${progressPercent}" aria-valuemin="0" aria-valuemax="100"></div>
                               <div class="progress-text position-absolute w-100 text-center">${progressText}</div>

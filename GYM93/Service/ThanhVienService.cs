@@ -1,6 +1,8 @@
-﻿using GYM93.Data;
+﻿using Azure.Storage.Blobs;
+using GYM93.Data;
 using GYM93.Models;
 using GYM93.Service.IService;
+using GYM93.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +11,12 @@ namespace GYM93.Service
     public class ThanhVienService : IThanhVienService
     {
         private readonly AppDbContext _appDbContext;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public ThanhVienService(AppDbContext appDbContext)
+        public ThanhVienService(AppDbContext appDbContext, BlobServiceClient blobServiceClient)
         {
             _appDbContext = appDbContext;
+            _blobServiceClient = blobServiceClient;
         }
 
         public async Task<ThanhVien> GetThanhVienById(int? thanhVienId)
@@ -33,16 +37,21 @@ namespace GYM93.Service
             if (thanhVien.Image != null)
             {
                 string fileName = thanhVien.ThanhVienId + Path.GetExtension(thanhVien.Image.FileName);
-                string filePath = @"wwwroot/memberImages/" + fileName;
-                var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
 
-                using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                // Get a reference to the container
+                var containerClient = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+
+                // Get a reference to the blob
+                var blobClient = containerClient.GetBlobClient(fileName);
+
+                // Upload the image to Azure Blob Storage
+                using (var stream = thanhVien.Image.OpenReadStream())
                 {
-                    thanhVien.Image.CopyTo(fileStream);
+                    await blobClient.UploadAsync(stream, true);
                 }
 
-
-                thanhVien.HinhAnhTv = "memberImages/" + fileName;
+                // Set the HinhAnhTv to the blob URL
+                thanhVien.HinhAnhTv = blobClient.Uri.ToString();
             }
             else
             {
@@ -61,13 +70,10 @@ namespace GYM93.Service
 
                 if (!string.IsNullOrEmpty(thanhVien.HinhAnhTv))
                 {
-                    var webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    var oldFilePathDirectory = Path.Combine(webRootPath, thanhVien.HinhAnhTv.Replace("/", "\\"));
-
-                    if (File.Exists(oldFilePathDirectory))
-                    {
-                        File.Delete(oldFilePathDirectory);
-                    }
+                    var containerClient = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+                    var blobName = Path.GetFileName(new Uri(thanhVien.HinhAnhTv).LocalPath);
+                    var blobClient = containerClient.GetBlobClient(blobName);
+                    await blobClient.DeleteIfExistsAsync();
                 }
                 _appDbContext.ThanhViens.Remove(thanhVien);
 
@@ -82,13 +88,12 @@ namespace GYM93.Service
             return await _appDbContext.ThanhViens.ToListAsync() ?? throw new ArgumentException("Thanh Vien Not Found");
         }
 
-        public async Task ThanhVienUpdate(int id,ThanhVien thanhVien)
+        public async Task ThanhVienUpdate(int id, ThanhVien thanhVien)
         {
             try
             {
-                ThanhVien member = _appDbContext.ThanhViens.FirstOrDefault(n => n.ThanhVienId == thanhVien.ThanhVienId);
+                ThanhVien member = await _appDbContext.ThanhViens.FindAsync(id);
 
-                // Kiểm tra nếu member không tồn tại
                 if (member == null)
                 {
                     throw new ArgumentException("Thanh Vien Not Found");
@@ -96,45 +101,42 @@ namespace GYM93.Service
 
                 if (thanhVien.Image != null)
                 {
-                    // Kiểm tra và xóa ảnh cũ nếu có
+                    // Delete old image from Blob Storage if it exists
                     if (!string.IsNullOrEmpty(member.HinhAnhTv))
                     {
-                        var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", member.HinhAnhTv);
-                        FileInfo file = new FileInfo(oldFilePathDirectory);
-                        if (file.Exists)
-                        {
-                            try
-                            {
-                                file.Delete();
-                            }
-                            catch (Exception ex)
-                            {
-                                // Xử lý lỗi nếu không thể xóa file
-                                throw new IOException("Không thể xóa ảnh cũ.", ex);
-                            }
-                        }
+                        var containerClient1 = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+                        var oldBlobName = Path.GetFileName(new Uri(member.HinhAnhTv).LocalPath);
+                        var oldBlobClient = containerClient1.GetBlobClient(oldBlobName);
+                        await oldBlobClient.DeleteIfExistsAsync();
                     }
 
-                    // Lưu ảnh mới
+                    // Upload new image to Blob Storage
                     string fileName = member.ThanhVienId + Path.GetExtension(thanhVien.Image.FileName);
-                    string filePath = Path.Combine("wwwroot", "memberImages", fileName);
-                    var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+                    var containerClient = _blobServiceClient.GetBlobContainerClient(SD.ContainerName);
+                    var blobClient = containerClient.GetBlobClient(fileName);
 
-                    using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                    using (var stream = thanhVien.Image.OpenReadStream())
                     {
-                        await thanhVien.Image.CopyToAsync(fileStream);
+                        await blobClient.UploadAsync(stream, true);
                     }
 
-                    member.HinhAnhTv = "memberImages/" + fileName; // Cập nhật đường dẫn ảnh mới
+                    member.HinhAnhTv = blobClient.Uri.ToString();
                 }
 
-                // Nếu không thay đổi ảnh, giữ nguyên ảnh cũ
+                // Update other properties
+                member.Ten = thanhVien.Ten;
+                member.Sđt = thanhVien.Sđt;
+                member.GioiTinh = thanhVien.GioiTinh;
+                member.BienSoXe = thanhVien.BienSoXe;
+                member.HoVaTenDem = thanhVien.HoVaTenDem; 
+                // ... update other properties as needed ...
+
                 _appDbContext.Entry(member).State = EntityState.Modified;
                 await _appDbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ThanhVienExists(thanhVien.ThanhVienId))
+                if (!ThanhVienExists(id))
                 {
                     throw new ArgumentException("Thanh Vien Not Found");
                 }
