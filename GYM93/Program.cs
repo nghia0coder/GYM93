@@ -1,6 +1,5 @@
 using GYM93.Data;
 using GYM93.Models;
-using GYM93.RoleIInitializer;
 using GYM93.Service;
 using GYM93.Service.IService;
 using Microsoft.AspNetCore.Identity;
@@ -116,12 +115,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-using(var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var configuration = services.GetRequiredService<IConfiguration>();
+//using(var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var configuration = services.GetRequiredService<IConfiguration>();
 
-    await RoleInitializer.InitializeRoles(services, configuration);
-}    
+//    await RoleInitializer.InitializeRoles(services, configuration);
+//}    
 
 app.Run();
