@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: "/hoadon/getallhoadon" },
+        "ajax": { url: window.location.origin + "/hoadon/getallhoadon" },
         "columns": [
             { data: "hoaDonId", "width": "15%", "className": "text-center" },
             { data: "tenThanhVien", "width": "15%", "className": "text-center" },
