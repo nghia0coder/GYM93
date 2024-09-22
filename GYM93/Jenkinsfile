@@ -10,7 +10,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'docker build -t itsnghiatime/gym93:v1.1 .'
+                sh 'docker build -t itsnghiatime/gym93:v1.1 -f GYM93/Dockerfisle GYM93/'
             }
         }
         
