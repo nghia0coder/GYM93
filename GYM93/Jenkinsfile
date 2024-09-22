@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/nghia0coder/GYM93.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'docker build -t itsnghiatime/gym93:v1.1 .'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                sshagent(['vps-ssh-key']) {
+                    sh '''
+                        ssh root@14.225.210.230 "
+                            docker pull itsnghiatime/gym93:v1.1
+                            docker stop gym93-webapp-1
+                            docker rm gym93-webapp-1
+                            docker run -d --name gym93-webapp-1 itsnghiatime/gym93:v1.1
+                        "
+                    '''
+                }
+            }
+        }
+    }
+}
