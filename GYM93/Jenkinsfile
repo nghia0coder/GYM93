@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/nghia0coder/GYM93.git', credentialsId: 'github-access-token'
+                git url: 'https://github.com/nghia0coder/GYM93.git', credentialsId: 'github-access-token'
             }
         }
         
