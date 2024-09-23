@@ -21,10 +21,10 @@ pipeline {
                         ssh-keyscan -H 14.225.210.230 >> ~/.ssh/known_hosts
                         
                         ssh root@14.225.210.230 "
-                            docker pull itsnghiatime/gym93:v1.1
-                            docker stop gym93-webapp-1
-                            docker rm gym93-webapp-1
-                            docker run -d --name gym93-webapp-1 itsnghiatime/gym93:v1.1
+                            sudo docker pull itsnghiatime/gym93:v1.1
+                            sudo docker stop gym93-webapp-1
+                            sudo docker rm gym93-webapp-1
+                            sudo docker run -d --name gym93-webapp-1 itsnghiatime/gym93:v1.1
                         "
                     '''
                 }
