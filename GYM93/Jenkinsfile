@@ -11,6 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'docker build -t itsnghiatime/gym93:v1.1 -f GYM93/Dockerfile GYM93/'
+                sh 'docker push itsnghiatime/gym93:v1.1' // Ensure the image is pushed to the registry
             }
         }
         
@@ -20,10 +21,10 @@ pipeline {
                     sh '''
                         ssh-keyscan -H 14.225.210.230 >> ~/.ssh/known_hosts
                         ssh -o StrictHostKeyChecking=no root@14.225.210.230 "
-                            sudo docker pull itsnghiatime/gym93:v1.1
-                            sudo docker stop gym93-webapp-1
-                            sudo docker rm gym93-webapp-1
-                            sudo docker run -d --name gym93-webapp-1 itsnghiatime/gym93:v1.1
+                            cd /home/gym93
+                            docker-compose pull webapp
+                            docker-compose up -d
+                            sudo systemctl restart nginx
                         "
                     '''
                 }
