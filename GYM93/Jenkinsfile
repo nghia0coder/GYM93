@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        def app = docker.build("itsnghiatime/gym93:v1.1", "-f GYM93/Dockerfile GYM93/")
+                        def app = docker.build("itsnghiatime/gym93:v1.2", "-f GYM93/Dockerfile GYM93/")
                         app.push()
                     }
                 }
